@@ -3,7 +3,6 @@ let apples: number = 5;
 
 apples = 10;
 // apples = 'hello' | error
-//
 
 const speed: string = 'fast';
 const hasName: boolean = true;
@@ -30,7 +29,7 @@ let car: Car = new Car();
 // Object literal
 let point: { x: number; y: number } = {
   x: 10,
-  y: 20
+  y: 20,
 };
 
 // Function
@@ -45,3 +44,26 @@ const json = '{"x": 10, "y": 20}';
 const coordinates: { x: number; y: number } = JSON.parse(json);
 
 console.log(coordinates);
+
+// 2) When we declare a variable to one line
+// and initalizate it later
+let words = ['red', 'green', 'blue'];
+let foundWord: boolean;
+// Better approach: let foundWord = false
+
+for (let i = 0; i < words.length; i++) {
+  if (words[i] === 'green') {
+    foundWord = true;
+  }
+}
+
+// 3) Variable whose type cannot be inferred correctyly
+// Type of numberAboveZero should be boolean or number: VERY BAD CODE EXAMPLE
+let numbers = [-10, -1, 12];
+let numberAboveZero: boolean | number = false;
+
+for (let i = 0; i < numbers.length; i++) {
+  if (numbers[i] > 0) {
+    numberAboveZero = numbers[i];
+  }
+}
