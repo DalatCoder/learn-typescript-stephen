@@ -4,7 +4,12 @@ export interface Sortable {
   swap(leftIndex: number, rightIndex: number): void;
 }
 
-export class Sorter {
+export abstract class Sorter {
+  // Props/Methods that are implemented by child classes
+  abstract length: number;
+  abstract compare(leftIndex: number, rightIndex: number): boolean;
+  abstract swap(leftIndex: number, rightIndex: number): void;
+
   sort(): void {
     const { length } = this;
 
