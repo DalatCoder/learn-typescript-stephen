@@ -2,16 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sorter = void 0;
 var Sorter = /** @class */ (function () {
-    // Union operator
-    function Sorter(collection) {
-        this.collection = collection;
+    function Sorter(comparable) {
+        this.comparable = comparable;
     }
     Sorter.prototype.sort = function () {
-        var length = this.collection.length;
+        var length = this.comparable.length;
         for (var i = 0; i < length; i++) {
             for (var j = 0; j < length - i - 1; j++) {
-                if (this.collection.compare(j, j + 1)) {
-                    this.collection.swap(j, j + 1);
+                if (this.comparable.compare(j, j + 1)) {
+                    this.comparable.swap(j, j + 1);
                 }
             }
         }
