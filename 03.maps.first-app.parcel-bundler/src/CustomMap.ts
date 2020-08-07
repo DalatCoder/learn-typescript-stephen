@@ -1,5 +1,9 @@
-import { User } from './User';
-import { Company } from './Company';
+interface Mappable {
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
 
 // CustomMap class to hide google api complexity
 // Expose only neccessary methods
@@ -17,7 +21,7 @@ export class CustomMap {
     });
   }
 
-  addMarker(mappable: User | Company): void {
+  addMarker(mappable: Mappable): void {
     new google.maps.Marker({
       map: this.googleMap,
       position: {
