@@ -1,8 +1,6 @@
 import { MatchResult } from './MatchResult';
 import { dateStringToDate } from './utils';
-
-// Define a tupple represents a row of CSV file (a match)
-type MatchData = [Date, string, string, number, number, MatchResult, string];
+import { MatchData } from './MatchData';
 
 export interface DataReader {
   read(): void;
