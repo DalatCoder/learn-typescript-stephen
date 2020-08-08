@@ -1,13 +1,9 @@
-import fs from 'fs';
+import { CsvFileReader } from './CsvFileReader';
 
-const matches = fs
-  .readFileSync('football.csv', {
-    encoding: 'utf-8',
-  })
-  .split('\n')
-  .map((row: string): string[] => {
-    return row.split(',');
-  });
+const reader = new CsvFileReader('football.csv');
+reader.read();
+
+const matches = reader.data;
 
 enum MatchResult {
   HomeWin = 'H',
