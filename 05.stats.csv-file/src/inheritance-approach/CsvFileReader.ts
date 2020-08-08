@@ -1,10 +1,12 @@
 import fs from 'fs';
-import { DataReader } from './MatchReader';
 
-export class CsvFileReader implements DataReader {
-  data: string[][] = [];
+// T represents a tupple described data on a row of the CSV file
+export abstract class CsvFileReader<T> {
+  data: T[] = [];
 
   constructor(public filename: string) {}
+
+  abstract mapRow(row: string[]): T;
 
   read(): void {
     this.data = fs
@@ -14,6 +16,7 @@ export class CsvFileReader implements DataReader {
       .split('\n')
       .map((row: string): string[] => {
         return row.split(',');
-      });
+      })
+      .map(this.mapRow);
   }
 }
