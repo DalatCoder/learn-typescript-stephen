@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "name": "06.web.simple-framework",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "concurrently": "^5.3.0",
+    "json-server": "^0.16.1",
+    "parcel": "^1.12.4"
+  },
+  "scripts": {
+    "start:db": "json-server -w db.json",
+    "start:parcel": "parcel index.html",
+    "start": "concurrently npm:start:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
