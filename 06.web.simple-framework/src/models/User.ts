@@ -48,4 +48,16 @@ export class User {
         this.set(response.data);
       });
   }
+
+  save(): void {
+    const id = this.get('id');
+
+    if (id) {
+      // Update user
+      axios.patch(`http://localhost:3000/users/${id}`, this.data);
+    } else {
+      // Create new user
+      axios.post('http://localhost:3000/users', this.data);
+    }
+  }
 }
