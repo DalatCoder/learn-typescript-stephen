@@ -52,3 +52,33 @@ function printAnything<T>(arr: T[]): void {
 
 printAnything<string>(arrayOfStrings.collection); // Recommend for TS to auto check error
 printAnything(arrayOfNumbers.collection); // Type inference
+
+// Generic Constraints
+
+class Car {
+  print() {
+    console.log('I am a car');
+  }
+}
+
+class House {
+  print() {
+    console.log('I am a house');
+  }
+}
+
+interface Printable {
+  print(): void;
+}
+
+// Every T pass to printHousesOrCars will satisfy Printable interface
+// Generic constraint: limit the type that we can pass to generics function
+function printHousesOrCars<T extends Printable>(arr: T[]): void {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i].print();
+  }
+}
+
+printHousesOrCars<Car>([new Car(), new Car()]);
+printHousesOrCars<House>([new House(), new House()]);
+// printHousesOrCars([1, 2, 3]); // Error
