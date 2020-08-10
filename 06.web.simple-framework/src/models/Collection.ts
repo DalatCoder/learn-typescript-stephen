@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
-import { User, UserProps } from './User';
 import { Eventing } from './Eventing';
 
-export class Collection {
-  models: User[] = [];
+export class Collection<T, K> {
+  models: T[] = [];
   events: Eventing = new Eventing();
 
-  constructor(public rootUrl: string) {}
+  // Deserialize: take an json oject from server and turn it into
+  // an instance of type T
+  constructor(public rootUrl: string, public deserialize: (json: K) => T) {}
 
   get on() {
     return this.events.on;
@@ -18,9 +19,7 @@ export class Collection {
 
   fetch(): void {
     axios.get(this.rootUrl).then((response: AxiosResponse): void => {
-      this.models = response.data.map(
-        (value: UserProps): User => User.buildUser(value)
-      );
+      this.models = response.data.map(this.deserialize);
 
       this.trigger('change');
     });
