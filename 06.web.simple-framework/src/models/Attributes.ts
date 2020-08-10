@@ -11,11 +11,11 @@ export class Attributes<T> {
   // T[K]: Look up the value of K in T and return the value at that key
   // T['name'] => string
   // T['age'] => number
-  get<K extends keyof T>(key: K): T[K] {
+  get = <K extends keyof T>(key: K): T[K] => {
     return this.data[key];
-  }
+  };
 
-  set(update: T): void {
+  set = (update: T): void => {
     this.data = { ...this.data, ...update };
-  }
+  };
 }
