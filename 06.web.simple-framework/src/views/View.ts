@@ -4,11 +4,17 @@ import { Model } from '../models/Model';
 // K is an interface that represents all props which the model has
 // such as UserProps
 export abstract class View<T extends Model<K>, K> {
+  regions: { [key: string]: Element } = {};
+
   constructor(public parent: Element, public model: T) {
     this.bindModel();
   }
 
   abstract template(): string;
+
+  regionsMap(): { [key: string]: string } {
+    return {};
+  }
 
   eventsMap(): { [key: string]: () => void } {
     return {};
@@ -32,6 +38,22 @@ export abstract class View<T extends Model<K>, K> {
     }
   }
 
+  mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap();
+
+    for (let key in regionsMap) {
+      const selector = regionsMap[key];
+      const element = fragment.querySelector(selector);
+
+      if (element) {
+        this.regions[key] = element;
+      }
+    }
+  }
+
+  // Nesting
+  onRender(): void {}
+
   render(): void {
     // Empty parent content before rendering
     this.parent.innerHTML = '';
@@ -40,6 +62,10 @@ export abstract class View<T extends Model<K>, K> {
     templateElement.innerHTML = this.template();
 
     this.bindEvents(templateElement.content);
+    this.mapRegions(templateElement.content);
+
+    // Render nestest element
+    this.onRender();
 
     this.parent.append(templateElement.content);
   }
