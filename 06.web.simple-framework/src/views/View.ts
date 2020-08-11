@@ -1,7 +1,10 @@
-import { User } from '../models/User';
+import { Model } from '../models/Model';
 
-export abstract class View {
-  constructor(public parent: Element, public model: User) {
+// T is an instance of Model type such as User Model,...
+// K is an interface that represents all props which the model has
+// such as UserProps
+export abstract class View<T extends Model<K>, K> {
+  constructor(public parent: Element, public model: T) {
     this.bindModel();
   }
 
