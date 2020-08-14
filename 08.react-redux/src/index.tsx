@@ -9,6 +9,7 @@ interface AppState {
   counter: number;
 }
 
+/*
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
@@ -34,5 +35,10 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 }
+ */
+
+const App = (props: AppProps): JSX.Element => {
+  return <div>{props.color}</div>;
+};
 
 ReactDOM.render(<App color="red" />, document.getElementById('root'));
