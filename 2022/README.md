@@ -156,9 +156,9 @@ Summary:
 - Type annotations: we tell `ts` the type
 - Type inference: `ts` guesses the type
 
-### Variables
+### Type annotations
 
-Type annotations:
+Type annotations with simple primitive types
 
 ```ts
 const apples: number = 5;
@@ -218,6 +218,91 @@ const logNumber: (i: number) => void = (i: number) => {
 // logNumber accept 1 argument with type of number and return nothing (void)
 ```
 
-### Functions
+### Type inference
+
+> if delaration and initialization are on the same line,
+> TS will figure out the type of 'color' for us
+
+```ts
+const color = "red";
+
+// variable declaration: const color
+// variable initialization: 'red'
+```
+
+If we `declare` a variable and then `assign` it a value
+on another line, `type inference` won't work anymore.
+
+```ts
+let colors;
+colors = "red";
+```
+
+### When to use
+
+- Type inference: always
+- Type annotations:
+  - When we declare a variable on one line then initialize it later
+  - When we want a variable to have a type that can't be inferred
+  - When a function returns the `any` type and we need to clearify the value
+
+#### function return `any` type
+
+```ts
+const json = '{ "x": 10, "y": 20 }';
+const coordinates = JSON.parse(json);
+
+// `any` type
+console.log(coordinates);
+```
+
+> the `any` type is essentially means that `ts`
+> has no idea what type of value is being used
+
+`any`
+
+- a type, just as `string` or `boolean` are
+- means `ts` has no idea what this is
+- can't check for correct property references
+- avoid variables with `any` at all costs
+
+Fixing the `any` type with type annotation
+
+```ts
+const json = '{ "x": 10, "y": 20 }';
+const coordinates: { x: number; y: number } = JSON.parse(json);
+
+console.log(coordinates);
+```
+
+#### delayed initialization
+
+```ts
+const numbers = [1, 2, 3, 4, 5];
+const evens: number[];
+
+for (const n of numbers) {
+  if (n % 2 === 0) {
+    evens.push(n);
+  }
+}
+```
+
+#### when inference doesn't work
+
+Occur when a variable can have multiple values of some types.
+Conside a `bad code` example below
+
+```ts
+const numbers = [-10, -1, 12];
+// let numberAboveZero = false;
+let numberAboveZero: boolean | number = false;
+
+for (const n of numbers) {
+  if (n > 0) {
+    numberAboveZero = n;
+  }
+}
+```
 
 ### Objects
