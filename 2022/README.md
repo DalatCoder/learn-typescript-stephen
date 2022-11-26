@@ -2,6 +2,23 @@
 
 [Link](https://www.udemy.com/course/typescript-the-complete-developers-guide)
 
+## Course overview
+
+2 things to concern when learning `ts`
+
+- `syntax` + `features`
+- `design patterns with ts`: how do we use `interface` to write reusable code?
+
+Course goal
+
+- Understanding basic types in `ts`
+- Function typing + annotations
+- Type definition files
+- Arrays in TS
+- Modules systems
+- Classes + Refresher on OOP
+- Projects (`focus on design patterns`)
+
 ## 1. Getting started with TS
 
 Build an app to make a network request to fetch
@@ -88,3 +105,40 @@ const logTodo = (id: number, title: string, completed: boolean) => {
 ```
 
 ## 2. What is a Type system?
+
+Flow
+
+- Plain defintion + overview
+- Why do we care?
+- Examples
+- When to use this?
+
+> Type is the easy way to refer to the different properties
+> and functions that a value has
+
+Types in `js`
+
+- Primitive types:
+
+  - number
+  - boolean
+  - void
+  - undefined
+  - string
+  - symbol
+  - null
+
+- Object types:
+  - functions
+  - array
+  - classes
+  - objects
+
+Why do we care about types?
+
+- Types are used by the `ts compiler` to analyze our code for errors
+- Types allow other engineers to understand what values are flowing aroud our codebase
+
+Where do we use types?
+
+- Everywhere
