@@ -142,3 +142,40 @@ Why do we care about types?
 Where do we use types?
 
 - Everywhere
+
+## Type annotations & Type inference
+
+- Type annotations: code we add to tell `ts` what type of
+  value a variable will refer to
+
+- Type inference: `ts` tries to figure out what type of
+  value a variable refers to
+
+Summary:
+
+- Type annotations: we tell `ts` the type
+- Type inference: `ts` guesses the type
+
+### Variables
+
+Type annotations:
+
+```ts
+const apples: number = 5;
+const speed: string = "fast";
+const hasName: boolean = true;
+
+// special: the value has the name equals to its type
+const nothingMuch: null = null;
+const nothing: undefined = undefined;
+```
+
+Type annotations with some built-in objects
+
+```ts
+const now: Date = new Date();
+```
+
+### Functions
+
+### Objects
