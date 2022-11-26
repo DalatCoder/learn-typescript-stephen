@@ -2,7 +2,7 @@
 
 [Link](https://www.udemy.com/course/typescript-the-complete-developers-guide)
 
-## Course overview
+## 1. Course overview
 
 2 things to concern when learning `ts`
 
@@ -19,7 +19,7 @@ Course goal
 - Classes + Refresher on OOP
 - Projects (`focus on design patterns`)
 
-## 1. Getting started with TS
+## 2. Getting started with TS
 
 Build an app to make a network request to fetch
 some JSON and print the result.
@@ -104,7 +104,7 @@ const logTodo = (id: number, title: string, completed: boolean) => {
 };
 ```
 
-## 2. What is a Type system?
+## 3. What is a Type system?
 
 Flow
 
@@ -143,7 +143,7 @@ Where do we use types?
 
 - Everywhere
 
-## Type annotations & Type inference
+## 4. Type annotations & Type inference
 
 - Type annotations: code we add to tell `ts` what type of
   value a variable will refer to
@@ -156,7 +156,7 @@ Summary:
 - Type annotations: we tell `ts` the type
 - Type inference: `ts` guesses the type
 
-### Type annotations
+### 4.1. Type annotations
 
 Type annotations with simple primitive types
 
@@ -218,7 +218,7 @@ const logNumber: (i: number) => void = (i: number) => {
 // logNumber accept 1 argument with type of number and return nothing (void)
 ```
 
-### Type inference
+### 4.2. Type inference
 
 > if delaration and initialization are on the same line,
 > TS will figure out the type of 'color' for us
@@ -238,7 +238,7 @@ let colors;
 colors = "red";
 ```
 
-### When to use
+### 4.3. When to use
 
 - Type inference: always
 - Type annotations:
@@ -246,7 +246,7 @@ colors = "red";
   - When we want a variable to have a type that can't be inferred
   - When a function returns the `any` type and we need to clearify the value
 
-#### function return `any` type
+#### 4.3.1. function return `any` type
 
 ```ts
 const json = '{ "x": 10, "y": 20 }';
@@ -275,7 +275,7 @@ const coordinates: { x: number; y: number } = JSON.parse(json);
 console.log(coordinates);
 ```
 
-#### delayed initialization
+#### 4.3.2. delayed initialization
 
 ```ts
 const numbers = [1, 2, 3, 4, 5];
@@ -288,7 +288,7 @@ for (const n of numbers) {
 }
 ```
 
-#### when inference doesn't work
+#### 4.3.3. when inference doesn't work
 
 Occur when a variable can have multiple values of some types.
 Conside a `bad code` example below
@@ -304,5 +304,3 @@ for (const n of numbers) {
   }
 }
 ```
-
-### Objects
