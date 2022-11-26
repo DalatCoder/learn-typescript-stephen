@@ -176,6 +176,48 @@ Type annotations with some built-in objects
 const now: Date = new Date();
 ```
 
+Type annotations with `array`
+
+```ts
+const colors: string[] = ["red", "green", "blue"];
+const numbers: number[] = [1, 2, 3];
+const truths: boolean[] = [true, false, true];
+```
+
+Type annotations with `classes`
+
+```ts
+class Car {}
+
+const car1: Car = new Car();
+const car2: Car = new Car();
+```
+
+Type annotations with `object literal`
+
+```ts
+// point is an object literal
+const point = {
+  x: 10,
+  y: 20,
+};
+
+const point1: { x: number; y: number } = {
+  x: 10,
+  y: 20,
+};
+```
+
+Type annotations with `functions`
+
+```ts
+const logNumber: (i: number) => void = (i: number) => {
+  console.log(i);
+};
+
+// logNumber accept 1 argument with type of number and return nothing (void)
+```
+
 ### Functions
 
 ### Objects
