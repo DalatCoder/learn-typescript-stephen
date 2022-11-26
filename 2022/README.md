@@ -2,7 +2,7 @@
 
 [Link](https://www.udemy.com/course/typescript-the-complete-developers-guide)
 
-## Getting started with TS
+## 1. Getting started with TS
 
 Build an app to make a network request to fetch
 some JSON and print the result.
@@ -86,3 +86,5 @@ const logTodo = (id: number, title: string, completed: boolean) => {
   `);
 };
 ```
+
+## 2. What is a Type system?
