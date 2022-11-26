@@ -2,6 +2,18 @@
 
 [Link](https://www.udemy.com/course/typescript-the-complete-developers-guide)
 
+- [Typescript: The Complete Developer's Guide](#typescript-the-complete-developers-guide)
+  - [1. Course overview](#1-course-overview)
+  - [2. Getting started with TS](#2-getting-started-with-ts)
+  - [3. What is a Type system?](#3-what-is-a-type-system)
+  - [4. Type annotations \& Type inference](#4-type-annotations--type-inference)
+    - [4.1. Type annotations](#41-type-annotations)
+    - [4.2. Type inference](#42-type-inference)
+    - [4.3. When to use](#43-when-to-use)
+      - [4.3.1. function return `any` type](#431-function-return-any-type)
+      - [4.3.2. delayed initialization](#432-delayed-initialization)
+      - [4.3.3. when inference doesn't work](#433-when-inference-doesnt-work)
+
 ## 1. Course overview
 
 2 things to concern when learning `ts`
