@@ -21,10 +21,10 @@
     - [5.5. Annotations around objects](#55-annotations-around-objects)
     - [5.6. Mastering Typed Arrays](#56-mastering-typed-arrays)
     - [5.7. Tuples in `ts`](#57-tuples-in-ts)
-    - [5.8. The all-important interface](#58-the-all-important-interface)
-      - [5.8.1. overview](#581-overview)
-      - [5.8.2. reusable code](#582-reusable-code)
-      - [5.8.3. general plan with interfaces](#583-general-plan-with-interfaces)
+  - [6. The all-important interface](#6-the-all-important-interface)
+    - [6.1. overview](#61-overview)
+    - [6.2. reusable code](#62-reusable-code)
+    - [6.3. general plan with interfaces](#63-general-plan-with-interfaces)
 
 ## 1. Course overview
 
@@ -513,9 +513,9 @@ Why tuples?
 
 - `csv` file, representing each record in a `tuple`
 
-### 5.8. The all-important interface
+## 6. The all-important interface
 
-#### 5.8.1. overview
+### 6.1. overview
 
 > `interfaces` + `classes` = how we get really strong code reuse in `ts`
 
@@ -603,12 +603,12 @@ const printReport = (reportable: Reportable): void => {
 };
 ```
 
-#### 5.8.2. reusable code
+### 6.2. reusable code
 
 The `printReport` function now can work with any `things` that
 have `summary` method on it (reusable code).
 
-#### 5.8.3. general plan with interfaces
+### 6.3. general plan with interfaces
 
 > `interface` is a gatekeeper to a `function`
 
