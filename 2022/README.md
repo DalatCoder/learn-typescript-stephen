@@ -21,6 +21,10 @@
     - [5.5. Annotations around objects](#55-annotations-around-objects)
     - [5.6. Mastering Typed Arrays](#56-mastering-typed-arrays)
     - [5.7. Tuples in `ts`](#57-tuples-in-ts)
+    - [The all-important interface](#the-all-important-interface)
+      - [overview](#overview)
+      - [reusable code](#reusable-code)
+      - [general plan with interfaces](#general-plan-with-interfaces)
 
 ## 1. Course overview
 
@@ -508,3 +512,110 @@ const tea: Drink = ["brown", false, 0];
 Why tuples?
 
 - `csv` file, representing each record in a `tuple`
+
+### The all-important interface
+
+#### overview
+
+> `interfaces` + `classes` = how we get really strong code reuse in `ts`
+
+Interfaces: creates a new type, describing the property names and
+value types of an object.
+
+```ts
+interface Vehicle {
+  name: string;
+  year: number;
+  broken: boolean;
+}
+
+const printVehicle = (vehicle: Vehicle): void => {
+  console.log(vehicle);
+};
+
+const oldCivic = {
+  name: "civic",
+  year: 2000,
+  broken: true,
+};
+
+// oldCivic statisfies Vehicle interface
+printVehicle(oldCivic);
+
+const o = {
+  name: "hieu",
+};
+
+// o doesn't statisty Vehicle interface
+printVehicle(oldCivic);
+```
+
+Syntax around `interface`
+
+```ts
+interface Vehicle {
+  name: string;
+  year: Date; // using any types in `interface`
+  broken: boolean;
+
+  // add a function signature
+  // summary function accepts no args and return string
+  summary(): string;
+}
+
+const oldCivic = {
+  name: "civic",
+  year: 2000,
+  broken: true,
+  summary(): string {
+    return `name: ${this.name}`;
+  },
+};
+```
+
+Consider the above example, we have `printVehicle` function that
+accept 1 args of interface `Vehicle`, but inside the function,
+we only use the method `summary`. So, is it neccessary for us
+to include `name, year, broken` inside the `Vehicle` interface?
+
+We can omit all of the `properties` inside the `Vehicle` interface
+and the entire program works at usual. Then, the `Vehicle` isn't
+a proper name for the `interface`, so we rename it to `Rerportable`.
+Means that something can be `report` if that thing has a method
+called `summary`
+
+```ts
+interface Reportable {
+  summary(): string;
+}
+
+const oldCivic = {
+  name: "civic",
+  year: new Date(),
+  broken: true,
+  summary(): string {
+    return `name: ${this.name}`;
+  },
+};
+
+const printReport = (reportable: Reportable): void => {
+  console.log(reportable.summary());
+};
+```
+
+#### reusable code
+
+The `printReport` function now can work with any `things` that
+have `summary` method on it (reusable code).
+
+#### general plan with interfaces
+
+> `interface` is a gatekeeper to a `function`
+
+General strategy for reusable code in `ts`
+
+- create functions that accept arguments that are typed with
+  `interfaces`
+
+- Objects/classes can decide to `implement` a given `interface`
+  to work with a `function`
