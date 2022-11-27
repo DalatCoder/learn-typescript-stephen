@@ -13,6 +13,12 @@
       - [4.3.1. function return `any` type](#431-function-return-any-type)
       - [4.3.2. delayed initialization](#432-delayed-initialization)
       - [4.3.3. when inference doesn't work](#433-when-inference-doesnt-work)
+  - [Annotations with Functions and Objects](#annotations-with-functions-and-objects)
+    - [Annotations with function expression](#annotations-with-function-expression)
+    - [Annotations with function declaration](#annotations-with-function-declaration)
+    - [`void` and `never`](#void-and-never)
+    - [Destructuring with annotations](#destructuring-with-annotations)
+    - [Annotations around objects](#annotations-around-objects)
 
 ## 1. Course overview
 
@@ -315,4 +321,127 @@ for (const n of numbers) {
     numberAboveZero = n;
   }
 }
+```
+
+## Annotations with Functions and Objects
+
+**Type annotations** for functions: Code we add to tell `ts` what
+type of arguments a function will receive and what type
+of values it will return
+
+**Type inference** for functions: `ts` tries to figure out what type of value a function will return
+
+### Annotations with function expression
+
+```ts
+// normal js function, a & b belong to `any` type
+const add = (a, b) => {
+  return a + b;
+};
+
+// add annnotation for the arguments
+const add = (a: number, b: number) => {
+  return a + b;
+};
+
+// add annotation for the returned value
+const add = (a: number, b: number): number => {
+  return a + b;
+};
+```
+
+### Annotations with function declaration
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+### `void` and `never`
+
+- `void`: a function that returns nothing
+  - can return `null`
+  - can return `undefined`
+
+```ts
+const logger = (message: string): void => {
+  console.log(message);
+};
+```
+
+- `never`: used when a function `throw` an `error`
+
+```ts
+// never reach the end of function
+const throwError = (message: string): never => {
+  throw new Error(message);
+};
+
+// throw error based on condition
+const throwError = (message: string): string => {
+  if (!message) {
+    throw new Error(message);
+  }
+
+  return message;
+};
+
+// throw error based on condition
+const throwError = (message: string): void => {
+  if (!message) {
+    throw new Error(message);
+  }
+
+  console.log(message);
+};
+```
+
+### Destructuring with annotations
+
+```ts
+const forecast = {
+  date: new Date(),
+  weather: "sunny",
+};
+
+const logWeather = (forecast: { date: Date; weather: string }): void => {};
+```
+
+Using `es6` destructing
+
+```ts
+const forecast = {
+  date: new Date(),
+  weather: "sunny",
+};
+
+const logWeather = ({
+  date,
+  weather,
+}: {
+  date: Date;
+  weather: string;
+}): void => {};
+```
+
+### Annotations around objects
+
+```ts
+const profile = {
+  name: "alex",
+  age: 20,
+  coords: {
+    lat: 0,
+    lng: 15,
+  },
+  setAge(age: number): void {
+    this.age = age;
+  },
+};
+
+const { age }: { age: number } = profile;
+const {
+  coords: { lat, lng },
+}: { coords: { lat: number; lng: number } } = profile;
 ```
