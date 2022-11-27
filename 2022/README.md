@@ -20,7 +20,7 @@
     - [5.4. Destructuring with annotations](#54-destructuring-with-annotations)
     - [5.5. Annotations around objects](#55-annotations-around-objects)
     - [5.6. Mastering Typed Arrays](#56-mastering-typed-arrays)
-    - [Tuples in `ts`](#tuples-in-ts)
+    - [5.7. Tuples in `ts`](#57-tuples-in-ts)
 
 ## 1. Course overview
 
@@ -474,7 +474,7 @@ Multiple types in `array`
 const carMakers: (string | number)[] = ["1", 1];
 ```
 
-### Tuples in `ts`
+### 5.7. Tuples in `ts`
 
 **Tuple**: array-like structure where each element represents
 somme property of a record.
