@@ -1,6 +1,11 @@
 # Typescript: The Complete Developer's Guide
 
-[Link](https://www.udemy.com/course/typescript-the-complete-developers-guide)
+[Typescript: The Complete Developer's Guide](https://www.udemy.com/course/typescript-the-complete-developers-guide) on Udemy
+
+Some silly questions:
+
+- [`interface` vs `type` in `ts`](https://stackoverflow.com/questions/37233735/interfaces-vs-types-in-typescript)
+- [`jsDoc` vs `ts`](https://stackoverflow.com/questions/68421854/jsdoc-ide-vs-typescript)
 
 - [Typescript: The Complete Developer's Guide](#typescript-the-complete-developers-guide)
   - [1. Course overview](#1-course-overview)
@@ -25,6 +30,11 @@
     - [6.1. overview](#61-overview)
     - [6.2. reusable code](#62-reusable-code)
     - [6.3. general plan with interfaces](#63-general-plan-with-interfaces)
+  - [Building Functionality with `classes`](#building-functionality-with-classes)
+    - [Overview](#overview)
+    - [Inheritance system](#inheritance-system)
+    - [instance method `modifiers`](#instance-method-modifiers)
+    - [Fields in classes](#fields-in-classes)
 
 ## 1. Course overview
 
@@ -619,3 +629,105 @@ General strategy for reusable code in `ts`
 
 - Objects/classes can decide to `implement` a given `interface`
   to work with a `function`
+
+## 7. Building Functionality with `classes`
+
+### 7.1. Overview
+
+> classes: blueprint to create an object with some fields (values)
+> and methods (functions) to represent a `thing`
+
+```ts
+class Vehicle {
+  drive(): void {
+    console.log("chugga chugga");
+  }
+
+  honk(): void {
+    console.log("beep beep");
+  }
+}
+
+// create new instance
+const vehicle = new Vehicle();
+
+// call method
+vehicle.drive();
+vehicle.honk();
+```
+
+### 7.2. Inheritance system
+
+```ts
+class Car extends Vehicle {
+  // override method
+  drive(): void {
+    console.log("vroom");
+  }
+}
+
+// create new instance
+const car = new Car();
+
+// call methods
+car.drive();
+car.honk();
+```
+
+### 7.3. instance method `modifiers`
+
+- `public`: this method can be called anywhere, anytime
+- `private`: this method can only be called by other methods in this
+  class
+- `protected`: this method can be called only by other methods in
+  this class, or by other methods in child classes
+
+### 7.4. Fields in classes
+
+```ts
+class Vehicle {
+  // declare a prop
+  color: string;
+
+  // init value for the prop
+  color: string = "red";
+
+  // init value via constructor
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+```
+
+Short syntax for declaring `props` inside a `class`
+
+```ts
+class Vehicle {
+  // short syntax
+  constructor(public color: string) {}
+}
+```
+
+### 7.5. Fields with inhertitance
+
+Call `constructor` from the parent class to initial `props` value
+
+```ts
+class Car extends Vehicle {}
+
+// call constructor from the super class
+const car = new Car("red");
+```
+
+Override `constructor`
+
+```ts
+class Car extends Vehicle {
+  constructor(public wheels: number, color: string) {
+    super(color);
+  }
+}
+
+// call constructor from the super class
+const car = new Car("red");
+```
