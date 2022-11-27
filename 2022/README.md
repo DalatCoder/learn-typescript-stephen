@@ -38,6 +38,7 @@ Table of Contents:
     - [7.3. instance method `modifiers`](#73-instance-method-modifiers)
     - [7.4. Fields in classes](#74-fields-in-classes)
     - [7.5. Fields with inhertitance](#75-fields-with-inhertitance)
+  - [Design pattersn with `ts` | maps project](#design-pattersn-with-ts--maps-project)
 
 ## 1. Course overview
 
@@ -734,3 +735,25 @@ class Car extends Vehicle {
 // call constructor from the super class
 const car = new Car("red");
 ```
+
+## Design pattersn with `ts` | maps project
+
+Using `parcel`: `npx parcel index.html`
+
+Overview
+
+- Create random user
+- Create random company
+- Show information on `gg map` via `gg api`
+
+Folder structure
+
+- `maps`
+  - `index.html` (link to `/src/index.ts`)
+  - `src`
+    - `index.ts`
+    - `Map.ts` (class)
+    - `User.ts` (class)
+    - `Company.ts` (class)
+
+Run project without setup `ts` by using `parcel`: `npx parcel index.html`
