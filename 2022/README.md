@@ -20,6 +20,7 @@
     - [5.4. Destructuring with annotations](#54-destructuring-with-annotations)
     - [5.5. Annotations around objects](#55-annotations-around-objects)
     - [5.6. Mastering Typed Arrays](#56-mastering-typed-arrays)
+    - [Tuples in `ts`](#tuples-in-ts)
 
 ## 1. Course overview
 
@@ -472,3 +473,38 @@ Multiple types in `array`
 ```ts
 const carMakers: (string | number)[] = ["1", 1];
 ```
+
+### Tuples in `ts`
+
+**Tuple**: array-like structure where each element represents
+somme property of a record.
+
+```ts
+const drink = {
+  color: "brown",
+  carbonated: true,
+  sugar: 40,
+};
+
+// use normal array to represent object properties
+// type: (string | boolean | number)[]
+// user can push string | boolean | number into this array
+const pepsi = ["brown", true, 40];
+
+// using tuple
+const pepsi: [string, boolean, number] = ["brown", true, 40];
+```
+
+We can define a `type` (type alias) for representing a `tuple`
+
+```ts
+type Drink = [string, boolean, number];
+
+const pepsi: Drink = ["brown", true, 40];
+const sprite: Drink = ["clear", true, 40];
+const tea: Drink = ["brown", false, 0];
+```
+
+Why tuples?
+
+- `csv` file, representing each record in a `tuple`
