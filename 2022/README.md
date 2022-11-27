@@ -13,12 +13,13 @@
       - [4.3.1. function return `any` type](#431-function-return-any-type)
       - [4.3.2. delayed initialization](#432-delayed-initialization)
       - [4.3.3. when inference doesn't work](#433-when-inference-doesnt-work)
-  - [Annotations with Functions and Objects](#annotations-with-functions-and-objects)
-    - [Annotations with function expression](#annotations-with-function-expression)
-    - [Annotations with function declaration](#annotations-with-function-declaration)
-    - [`void` and `never`](#void-and-never)
-    - [Destructuring with annotations](#destructuring-with-annotations)
-    - [Annotations around objects](#annotations-around-objects)
+  - [5. Annotations with Functions and Objects](#5-annotations-with-functions-and-objects)
+    - [5.1. Annotations with function expression](#51-annotations-with-function-expression)
+    - [5.2. Annotations with function declaration](#52-annotations-with-function-declaration)
+    - [5.3. `void` and `never`](#53-void-and-never)
+    - [5.4. Destructuring with annotations](#54-destructuring-with-annotations)
+    - [5.5. Annotations around objects](#55-annotations-around-objects)
+    - [5.6. Mastering Typed Arrays](#56-mastering-typed-arrays)
 
 ## 1. Course overview
 
@@ -323,7 +324,7 @@ for (const n of numbers) {
 }
 ```
 
-## Annotations with Functions and Objects
+## 5. Annotations with Functions and Objects
 
 **Type annotations** for functions: Code we add to tell `ts` what
 type of arguments a function will receive and what type
@@ -331,7 +332,7 @@ of values it will return
 
 **Type inference** for functions: `ts` tries to figure out what type of value a function will return
 
-### Annotations with function expression
+### 5.1. Annotations with function expression
 
 ```ts
 // normal js function, a & b belong to `any` type
@@ -350,7 +351,7 @@ const add = (a: number, b: number): number => {
 };
 ```
 
-### Annotations with function declaration
+### 5.2. Annotations with function declaration
 
 ```ts
 function add(a: number, b: number): number {
@@ -358,7 +359,7 @@ function add(a: number, b: number): number {
 }
 ```
 
-### `void` and `never`
+### 5.3. `void` and `never`
 
 - `void`: a function that returns nothing
   - can return `null`
@@ -397,7 +398,7 @@ const throwError = (message: string): void => {
 };
 ```
 
-### Destructuring with annotations
+### 5.4. Destructuring with annotations
 
 ```ts
 const forecast = {
@@ -425,7 +426,7 @@ const logWeather = ({
 }): void => {};
 ```
 
-### Annotations around objects
+### 5.5. Annotations around objects
 
 ```ts
 const profile = {
@@ -444,4 +445,30 @@ const { age }: { age: number } = profile;
 const {
   coords: { lat, lng },
 }: { coords: { lat: number; lng: number } } = profile;
+```
+
+### 5.6. Mastering Typed Arrays
+
+**Typed arrays**: arrays where each element is some consistent type
+of value
+
+```ts
+// type inference
+const carMakers = ["ford", "toyota", "chevy"];
+
+// type annotation
+const carMakers: string[] = ["ford", "toyota", "chevy"];
+```
+
+Why do we care?
+
+- `ts` can do type inference when extracting values from an array
+- `ts` can prvent us from adding incompatible values to the array
+- we can get help with `map`, `forEach`, `reduce` functions
+- flexible - arrays can still contain multiple different types
+
+Multiple types in `array`
+
+```ts
+const carMakers: (string | number)[] = ["1", 1];
 ```
