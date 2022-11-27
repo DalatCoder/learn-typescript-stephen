@@ -7,6 +7,8 @@ Some silly questions:
 - [`interface` vs `type` in `ts`](https://stackoverflow.com/questions/37233735/interfaces-vs-types-in-typescript)
 - [`jsDoc` vs `ts`](https://stackoverflow.com/questions/68421854/jsdoc-ide-vs-typescript)
 
+Table of Contents:
+
 - [Typescript: The Complete Developer's Guide](#typescript-the-complete-developers-guide)
   - [1. Course overview](#1-course-overview)
   - [2. Getting started with TS](#2-getting-started-with-ts)
@@ -30,11 +32,12 @@ Some silly questions:
     - [6.1. overview](#61-overview)
     - [6.2. reusable code](#62-reusable-code)
     - [6.3. general plan with interfaces](#63-general-plan-with-interfaces)
-  - [Building Functionality with `classes`](#building-functionality-with-classes)
-    - [Overview](#overview)
-    - [Inheritance system](#inheritance-system)
-    - [instance method `modifiers`](#instance-method-modifiers)
-    - [Fields in classes](#fields-in-classes)
+  - [7. Building Functionality with `classes`](#7-building-functionality-with-classes)
+    - [7.1. Overview](#71-overview)
+    - [7.2. Inheritance system](#72-inheritance-system)
+    - [7.3. instance method `modifiers`](#73-instance-method-modifiers)
+    - [7.4. Fields in classes](#74-fields-in-classes)
+    - [7.5. Fields with inhertitance](#75-fields-with-inhertitance)
 
 ## 1. Course overview
 
