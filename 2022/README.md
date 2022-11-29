@@ -39,6 +39,9 @@ Table of Contents:
     - [7.4. Fields in classes](#74-fields-in-classes)
     - [7.5. Fields with inhertitance](#75-fields-with-inhertitance)
   - [Design pattersn with `ts` | maps project](#design-pattersn-with-ts--maps-project)
+    - [Overview](#overview)
+    - [Generate random data with `faker`](#generate-random-data-with-faker)
+    - [Type definition files](#type-definition-files)
 
 ## 1. Course overview
 
@@ -738,6 +741,8 @@ const car = new Car("red");
 
 ## Design pattersn with `ts` | maps project
 
+### Overview
+
 Using `parcel`: `npx parcel index.html`
 
 Overview
@@ -757,3 +762,27 @@ Folder structure
     - `Company.ts` (class)
 
 Run project without setup `ts` by using `parcel`: `npx parcel index.html`
+
+### Generate random data with `faker`
+
+- Community fork of original `faker`: `https://github.com/faker-js/faker`
+- Install `faker` via `npm`: `npm install @faker-js/faker`
+- Import to use: `import { Faker } from "@faker-js/faker"`
+- `faker v6` is now native support for `ts`, so we doesn't need
+  to install `@types` declarations
+
+### Type definition files
+
+We can think of `type definition file` as an `adapter` between our
+`ts` project and the `js` library that we try to work with.
+
+The `type definition file` is gonna tell `ts` compiler all the dirrent
+functions that are available inside the `js` library. What type of `arguments`
+they take and what type of `value` those function returns.
+
+Sometimes, the `type definition file` is also attached automatically when we
+install the library, such as `axios`.
+
+If the `js` library does not include the `type definition file`, we need to
+install it manually. Some popular libraries alreay have the `definition files`
+public at `@types/{library_name}`
