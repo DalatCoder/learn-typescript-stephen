@@ -13,3 +13,18 @@
 Why TS?
 
 ![Image](assets/whyts.png)
+
+### TypeScript Advantages
+
+Typescript adds
+
+- Types
+- Next-generation Javascript features (compiled down for older version)
+- Non-JS features like `interfaces` or `generics`
+- Meta-Programming features like `decorators`
+- Rich configuration options
+- Modern tooling that helps even in non-ts project
+
+### Course outline
+
+![Image](assets/outline.png)
