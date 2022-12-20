@@ -28,3 +28,31 @@ Typescript adds
 ### Course outline
 
 ![Image](assets/outline.png)
+
+### Boilerplat project
+
+`boilerplate`
+
+- `index.html`
+- `app.ts`
+- `package.json`
+
+```json
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server",
+    "compile": "tsc *.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.6.1",
+    "typescript": "^4.9.4"
+  }
+}
+```
