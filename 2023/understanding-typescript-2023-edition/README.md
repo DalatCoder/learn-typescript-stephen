@@ -78,3 +78,29 @@ const number2: number = 2.8;
 const result = add(number1, number2);
 console.log(result);
 ```
+
+### Typescript types vs Javascript types
+
+Using `typeof` operator in `js`, checking the type at `runtime`
+
+```js
+function add(n1, n2) {
+  if (typeof n1 !== "number") {
+    throw new Error("");
+  }
+
+  if (typeof n2 !== "number") {
+    throw new Error("");
+  }
+}
+```
+
+Using `ts` for type checking at `compile time`
+
+> The key difference is: JS uses "dynamic types" (resolved at runtime).
+> Typescript uses "static types" (set during development time)
+
+The core primitive types in TS are all lowercase!
+
+- `string` not `String`
+- `number` not `Number`
