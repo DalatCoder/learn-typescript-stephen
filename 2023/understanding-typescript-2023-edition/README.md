@@ -104,3 +104,8 @@ The core primitive types in TS are all lowercase!
 
 - `string` not `String`
 - `number` not `Number`
+
+### Type Assignment & Type Inference
+
+- Type assignment: we write type manually
+- Type inference: TS try to figure out the variable type
