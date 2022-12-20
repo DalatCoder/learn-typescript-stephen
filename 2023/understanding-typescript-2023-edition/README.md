@@ -56,3 +56,25 @@ Typescript adds
   }
 }
 ```
+
+## Section 2. TypeScript Basics & Basic Types
+
+### Using types
+
+Core types
+
+- `number`: no special type for `integer` or `float`
+- `string`: `'hi'`, `"hi"`, \`hi\`
+- `boolean`: `true`, `false`, no `truthy` or `falsy` values
+
+```ts
+function add(n1: number, n2: number): number {
+  return n1 + n2;
+}
+
+const number1: number = 5;
+const number2: number = 2.8;
+
+const result = add(number1, number2);
+console.log(result);
+```
