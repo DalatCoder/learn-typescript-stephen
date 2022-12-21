@@ -240,3 +240,65 @@ const u1: User = { name: "Max", age: 30 }; // this works!
 ```
 
 ### Function return types & `void`
+
+It's a good idea to let `ts` infer the function return types.
+
+```ts
+function add(n1: number, n2: number): number {
+  return n1 + n2;
+}
+
+function concat(s1: string, s2: string): string {
+  return s1 + s2;
+}
+
+const sum = add(1, 2); // number
+const s3 = concat("a", "b"); // string
+```
+
+Using `void` when the function isn't return anything
+
+```ts
+function greeting(): void {
+  console.log("Hello World");
+}
+
+const result = greeting();
+console.log(result); // undefined
+```
+
+In `js` the function always return value, if we didn't return anything,
+`undefined` is automatically return.
+
+```ts
+function greeting(): undefined {
+  console.log("Hello World");
+
+  return undefined;
+}
+```
+
+`void` is the return type we should choose if the function is not
+return anything (does not have the `return` keyword)
+
+### Function as Types
+
+```ts
+const numbers = [1, 2, 3];
+
+let doubleFn: (n: number) => number;
+doubleFn = (n: number) => n * 2;
+
+numbers.map(doubleFn);
+```
+
+### Function types & callbacks
+
+```ts
+function customMap(
+  numbers: number[],
+  cb: (value: number, index: number) => number
+) {}
+
+customMap([1, 2, 3], (value, index) => {});
+```
