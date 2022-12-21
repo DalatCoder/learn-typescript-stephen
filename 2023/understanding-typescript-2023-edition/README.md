@@ -302,3 +302,78 @@ function customMap(
 
 customMap([1, 2, 3], (value, index) => {});
 ```
+
+### The `unknown` type
+
+```ts
+let userInput: unknown;
+
+userInput = 1;
+userInput = "a";
+```
+
+`unknown` is different to `any`
+
+```ts
+let userInput: unknown;
+let userName: string;
+
+userInput = 1;
+userInput = "a";
+
+userName = userInput; // error
+```
+
+`error`: type `unknown` is not assignable to type `string`
+
+```ts
+let userInput: any;
+let userName: string;
+
+userInput = 1;
+userInput = "a";
+
+userName = userInput; // this works
+```
+
+`any` is the most `flexible` type in `ts`, and it basically disables
+all type checking. And `ts` just says, "I give up, do whatever you want"
+
+`unknown` is a bit more restricted than `any`
+
+```ts
+let userInput: unknown;
+let userName: string;
+
+userInput = 1;
+userInput = "a";
+
+if (typeof userInput === "string") {
+  userName = userInput; // we have to check first
+}
+```
+
+`unknown` is better than `any` because it makes sure that you're not
+allowed to everything but you have at least some `type checking`
+
+### The `never` type
+
+```ts
+function generateError(message: string, code: number): never {
+  throw { message, errorCode: code };
+}
+
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+generateError("Bad Request", 400);
+```
+
+The helper function above never return anything.
+
+```ts
+const result = generateError("Bad Request", 400);
+
+console.log(result); // the app never reach here
+```
