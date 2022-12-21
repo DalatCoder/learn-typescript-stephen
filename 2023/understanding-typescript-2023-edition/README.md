@@ -66,6 +66,14 @@ Core types
 - `number`: no special type for `integer` or `float`
 - `string`: `'hi'`, `"hi"`, \`hi\`
 - `boolean`: `true`, `false`, no `truthy` or `falsy` values
+- `object`
+- `Array`
+
+Types added by `ts`
+
+- `Tuple`: a `fixed-length` array (`[1, 2]`)
+- `Enum`: automatically enumerated global constant identifies
+- `any`: any kind of value, no specific type assignment
 
 ```ts
 function add(n1: number, n2: number): number {
@@ -109,3 +117,126 @@ The core primitive types in TS are all lowercase!
 
 - Type assignment: we write type manually
 - Type inference: TS try to figure out the variable type
+
+### Object Types
+
+```ts
+const person: {
+  name: string;
+  age: number;
+} = {
+  name: "hieu",
+  age: 20,
+};
+```
+
+### Arrays Types
+
+```ts
+const numbers: number[] = [1, 2, 3];
+const strings: string[] = ["a", "b", "c"];
+
+const things: any[] = [1, "a", true];
+```
+
+### Tuples
+
+```ts
+const adminRole: [number, string] = [1, "admin"];
+const guestRole: [number, string] = [2, "guest"];
+
+const csvColumns: [string, string] = ["first_name", "last_name"];
+const csvValues: [string, string] = ["Hieu", "Nguyen Trong"];
+```
+
+### Enums
+
+```ts
+enum Role {
+  ADMIN,
+  GUEST,
+}
+
+const adminRole = Role.ADMIN; // 0
+const guestRole = Role.GUEST; // 1
+
+enum Permission = {
+    READ = 'READ',
+    EDIT = 'EDIT',
+    VIEW = 'VIEW'
+}
+
+const permission = Permission.READ; // READ
+```
+
+### The `any` type
+
+```ts
+let nonExpectedType: any;
+
+nonExpectedType = 1;
+nonExpectedType = "a";
+nonExpectedType = true;
+```
+
+Avoid `any` as much as possible
+
+### `union` types
+
+```ts
+let nullableNumber: number | null = 1;
+nullableNumber = null;
+```
+
+```ts
+function combine(input1: number | string, input2: number | string) {
+  let result;
+
+  if (typeof input1 === "number" && typeof input2 === "number") {
+    result = input1 + input2;
+  } else if (typeof input1 === "string" && typeof input2 === "string") {
+    result = input1 + input2;
+  }
+
+  return result;
+}
+```
+
+### Literal Types
+
+```ts
+function checkPermision(permission: "read" | "view" | "create") {}
+
+checkPermision("read");
+checkPermision("view");
+checkPermision("create");
+
+checkPermision("download"); // not allowed
+```
+
+### Type aliases / Custom types
+
+It can be cumbersome to always repeat the union type like this: `number | string`
+
+You might want to trade a new type which reinstalls this union type. We can do that by using another `ts` feature called `type aliases`
+
+```ts
+type NullableString = string | null;
+type NullableNumber = number | null;
+type PermissionDescriptor = "read" | "view" | "download";
+
+function add(a: NullableNumber, b: NullableNumber) {}
+
+let n1: NullableNumber;
+n1 = 1;
+n1 = null;
+```
+
+Type aliases can be used to "create" your own types. You're not limited to storing union types though - you can also provide an alias to a (possibly complex) object type.
+
+```ts
+type User = { name: string; age: number };
+const u1: User = { name: "Max", age: 30 }; // this works!
+```
+
+### Function return types & `void`
