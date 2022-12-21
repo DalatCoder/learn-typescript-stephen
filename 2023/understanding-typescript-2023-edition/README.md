@@ -377,3 +377,123 @@ const result = generateError("Bad Request", 400);
 
 console.log(result); // the app never reach here
 ```
+
+## Section 3: The `ts` compiler (and its configs)
+
+### Using `watch` mode
+
+- `tsc *.ts --watch`
+- `tsc *.ts -w`
+
+### Compiling the entire project / multiple files
+
+- `tsc --init` to initialize the `ts` project
+- we get the `tsconfig.json`
+- now we only need to run `tsc`
+
+### Including & Excluding files
+
+```json
+{
+  "exclude": ["secret.ts", "*.dev.ts", "**/*.dev.ts", "node_modules"]
+}
+```
+
+- `secret.ts`: ignore `secret.ts` file
+- `node_modules`: ignore `node_modules` folder
+- `*.dev.ts`: ignore any file ending with `.dev.ts`
+- `**/*.dev.ts`: ignore any file ending with `.dev.ts` in any folder
+
+```json
+{
+  //   "include": ["app.ts"]
+}
+```
+
+### Setting a compilation target
+
+We will look at `compilerOptions`, this will control how `ts` code
+is compiled.
+
+- `target`: which `js` version we want to compile the code, the default
+  value is `es5`
+
+### Understanding `ts` core `libs`
+
+`lib` is an option that allows you to specify which default
+objects and features `ts` knows.
+
+```ts
+document.querySelector(); // how does `ts` know document exists?
+```
+
+How does `ts` know document exists?
+
+If we don't set the value for `lib`, the default value are set based on
+our `target` option.
+
+If `target` is `es6`, then the `lib` contains all the features that `es6`
+give us, such as:
+
+- `Map()`
+- All DOM API
+- ...
+
+[tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+
+[compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
+
+### Working with source maps
+
+Sourcemap helps us with debugging and development. If we set `sourceMap = true`. The `map` file basically act as a bridge which is understood by
+modern browsers and the developer tools to connect the `js` files
+to the input files (`ts` file).
+
+These files help simplied the debugging process.
+
+### `rootDir` and `outDir`
+
+Often, in project, we will have the `dist` folder, it has the job of
+holding all the output (all the `js` files).
+
+The `src` folder will hold all the input files (all the `ts` files).
+
+```json
+{
+  "outDir": "./dist",
+  "rootDir": "./src"
+}
+```
+
+### Stop emitting files on compilation errors
+
+```json
+{
+  "noEmitOnError": false
+}
+```
+
+Don't output `js` file if the corresponding `ts` file contains some
+errors
+
+### Strict compilation
+
+### Code quality options
+
+### Debugging with VSCode
+
+Extensions:
+
+- ESLint
+- Prettier
+- Debugger for Chrome
+
+Configs:
+
+- Enable source map options: `sourceMap = true`
+
+Process:
+
+- Set breakpoint
+- Start debug mode
+- Set `url` equal to the local server: `http://localhost:3000`
