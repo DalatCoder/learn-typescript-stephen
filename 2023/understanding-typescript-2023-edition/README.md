@@ -529,3 +529,124 @@ const [first, second, ...remainNumbers] = numbers;
 ### How code gets compiled
 
 `ts` helps us compile modern `js` to old `js` if we tell `ts` to do so.
+
+## Section 5: Classes & Interfaces
+
+### What are `classes`?
+
+![Image](assets/oop.png)
+
+![Image](assets/class.png)
+
+```ts
+class Department {
+  name: string;
+
+  constructor(n: string) {
+    this.name = n;
+  }
+}
+
+const accounting = new Department("Accounting");
+
+console.log(accounting);
+```
+
+### `constructor` functioins & the `this` keyword
+
+```ts
+class Department {
+  name: string;
+
+  constructor(n: string) {
+    this.name = n;
+  }
+
+  describe() {
+    console.log("Department: " + this.name);
+  }
+}
+
+const accounting = new Department("Accounting");
+
+console.log(accounting);
+```
+
+Using `this` to refer to the current `instance`.
+
+However, the `this` keyword can be tricky.
+
+```ts
+class Department {
+  name: string;
+
+  constructor(n: string) {
+    this.name = n;
+  }
+
+  describe() {
+    console.log("Department: " + this.name);
+  }
+}
+
+const accounting = new Department("Accounting");
+
+accounting.describe(); // Department Accounting
+
+const accountingCopy = { describe: accounting.describe };
+accountingCopy.describe(); // Department undefined
+```
+
+> `this` typically refers to the thing which is responsible for calling
+> a method
+
+`ts` helps us to bind the `this` context by using `this` in function params list.
+
+```ts
+class Department {
+  name: string;
+
+  constructor(n: string) {
+    this.name = n;
+  }
+
+  // this in the method always bind to Department class
+  describe(this: Department) {
+    console.log("Department: " + this.name);
+  }
+}
+
+const accounting = new Department("Accounting");
+
+accounting.describe(); // Department Accounting
+
+const accountingCopy = { describe: accounting.describe };
+accountingCopy.describe(); // error
+
+const accountingCopy1 = { name: "DUMMY", describe: accounting.describe };
+accountingCopy1.describe(); // Department DUMMY
+```
+
+### `private` and `public` access modifiers
+
+```ts
+class Department {
+  private name: string;
+
+  constructor(n: string) {
+    this.name = n;
+  }
+
+  // this in the method always bind to Department class
+  describe(this: Department) {
+    console.log("Department: " + this.name);
+  }
+}
+
+const accounting = new Department("Accounting");
+accounting.name = "IT"; // error
+```
+
+`public` is the default access mofidifier.
+
+### Shorthand initialization
