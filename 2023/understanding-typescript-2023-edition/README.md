@@ -795,3 +795,138 @@ class DbContext {
   }
 }
 ```
+
+### `interface`
+
+An `interface` describes the structure of an object. We can use it to
+describe how an object should look like.
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+
+  greet(phrase: string): void;
+}
+```
+
+Use `interface` as a `type`
+
+```ts
+let user1: Person;
+
+user1 = {
+  name: "max",
+  age: 30,
+  greet(phrase: string) {
+    console.log(phrase + " " + this.name);
+  },
+};
+```
+
+> We can use `interface` as a `type` to type check for objects that must
+> have this structure
+
+### Using `interface` with `class`
+
+`interface` can be used as a `contract` a class can implement and a class
+then has to adhere to.
+
+```ts
+interface Greetable {
+  name: string;
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  name: string;
+
+  greet(phrase: string) {
+    console.log("hello");
+  }
+}
+```
+
+`interface` is often used to share functionality amongst different
+classes not regarding their concrete implementation.
+
+### Why `interface`?
+
+Well, it is useful in situations like this,
+where we know we want to have
+a certain set of functionalities.
+
+Let's say a `greet` method, and we want to ensure
+that a class has such a `greet` method,
+and another class has it maybe as well,
+well, then, we can implement an interface
+which forces the existence of this method.
+Then we can easily share functionality amongst classes,
+and every class has to add its own implementation,
+the exact code that should execute
+when the method is called,
+but we enforce a certain structure
+
+That allows us to write truly powerful and flexible code.
+Where we don't have to know everything about an object,
+or everything about a class. But we know that class implement
+that interface and it has all of the needed methods to us to use.
+
+### Readonly interface properties
+
+```ts
+interface Greetable {
+  readonly name: string;
+}
+```
+
+### Extending interface
+
+```ts
+interface Named {
+  readonly name: string;
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+```
+
+### Interface as function type
+
+Interfaces can also be used to define the structure of a
+function. So basically as a replacement for the function type.
+
+```ts
+type AddFn = (a: number, b: number) => number;
+
+let add: AddFn;
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+
+interface AddFn {
+  (a: number, b: number): number;
+}
+let add: AddFn;
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+```
+
+### Optional Parameters & Properties
+
+```ts
+interface Named {
+  readonly name: string;
+  outputName?: string; // optional
+
+  greet(phrase?: string) {
+
+  }
+
+  greet1(phrase: string = '') {
+
+  }
+}
+```
