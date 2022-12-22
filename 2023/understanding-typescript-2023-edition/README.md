@@ -650,3 +650,148 @@ accounting.name = "IT"; // error
 `public` is the default access mofidifier.
 
 ### Shorthand initialization
+
+```ts
+class Department {
+    constructor(
+        private firstName: string,
+        private lastName string,
+        private age: number
+    ) {}
+}
+```
+
+### `readonly` properties
+
+Field value can be assigned once inside the constructor.
+
+### Inheritance
+
+```ts
+class Department {}
+
+class ITDepartment extends Department {
+  constructor() {
+    // call the parent constructor, must be called first
+    super();
+
+    // another constructor init
+    // ...
+  }
+}
+
+class AccountingDepartment extends Department {}
+```
+
+Class can only inherit from 1 parent class.
+
+### Overriding properties & the `protected` modifier
+
+### Getters & Setters
+
+```ts
+class Department {}
+
+class ITDepartment extends Department {
+  private report: string;
+
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
+    }
+
+    throw new Error("No report found");
+  }
+
+  set mostRecentReport(value: string) {
+    if (!value) {
+      throw new Error("Invalid value");
+    }
+
+    this.report = value;
+  }
+
+  constructor() {
+    // call the parent constructor, must be called first
+    super();
+
+    // another constructor init
+    // ...
+  }
+}
+
+const it = new ITDepartment();
+
+it.mostRecentReport;
+
+it.mostRecentReport = "New Report";
+it.mostRecentReport;
+```
+
+A getter is basically a property, where you execute a function
+or a method when you retrieve a value and that allows developer
+to add more complex logic.
+
+### Static methods & Properties
+
+Static props and methods allow you to add props and methods to `classes`
+which are not accessed on an `instance` of the `class`.
+
+> This is often useful for utility functions that you want to group or
+> map to a class logically or global constants which you also wanna
+> store in a class.
+
+```ts
+Math.pow();
+Math.PI;
+```
+
+`Math` acts more like a `namespace` as a `grouping` mechanism here. And
+that's a common use case for static methods and properties.
+
+```ts
+class Utils {
+  static fiscalYear = 2022;
+
+  static toUpper(str: string) {
+    return str.toUpperCase();
+  }
+}
+
+Utils.toUpper("ts"); // TS
+Utils.fiscalYear;
+```
+
+### Abstract classes
+
+Add some methods to the `abstract class` as have all child classes
+implement those methods
+
+`Abstract` can therefore be very useful if you wanna enforce that
+all classes based on some other class, share some common method
+or property. The base class don't have to provide the concrete value,
+the concrete implementation. The inheriting classes have to do that.
+
+The `abstract` class can't be instatiated themselves
+
+### Singletons & Private constructors
+
+The singleton pattern is about ensuring that you always only have
+exactly one instance of a certain class.
+
+```ts
+class DbContext {
+  private static instance: DbContext;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (DbContext.instance) {
+      return DbContext.instance;
+    }
+
+    DbContext.instance = new DbContext();
+    return DbContext.instance;
+  }
+}
+```
