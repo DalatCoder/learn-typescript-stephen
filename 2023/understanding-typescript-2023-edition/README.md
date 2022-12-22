@@ -497,3 +497,35 @@ Process:
 - Set breakpoint
 - Start debug mode
 - Set `url` equal to the local server: `http://localhost:3000`
+
+## Section 4: Next-generation JS & TS
+
+[Next JS & TS Feature & Supports](https://kangax.github.io/compat-table/es6/)
+
+### `let` and `const`
+
+Scope in which this variable is available.
+
+- `var`: global & function scope
+- `let`: global & function & block scope
+- `const`: global & function & block scope
+
+### Arrow function
+
+### Default function parameters
+
+### The spread operator `...`
+
+### Rest Parameters
+
+### Array & Object destructuring
+
+```ts
+const numbers = [1, 2, 3, 4, 5];
+
+const [first, second, ...remainNumbers] = numbers;
+```
+
+### How code gets compiled
+
+`ts` helps us compile modern `js` to old `js` if we tell `ts` to do so.
