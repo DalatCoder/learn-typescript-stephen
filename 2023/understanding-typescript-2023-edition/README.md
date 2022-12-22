@@ -1,8 +1,71 @@
 # Understanding Typescript - 2023 Edition
 
-## Section 1. Getting started
+- [Understanding Typescript - 2023 Edition](#understanding-typescript---2023-edition)
+  - [1. Section 1. Getting started](#1-section-1-getting-started)
+    - [1.1. What is TS \& Why should you use it?](#11-what-is-ts--why-should-you-use-it)
+    - [1.2. TypeScript Advantages](#12-typescript-advantages)
+    - [1.3. Course outline](#13-course-outline)
+    - [1.4. Boilerplat project](#14-boilerplat-project)
+  - [2. Section 2. TypeScript Basics \& Basic Types](#2-section-2-typescript-basics--basic-types)
+    - [2.1. Using types](#21-using-types)
+    - [2.2. Typescript types vs Javascript types](#22-typescript-types-vs-javascript-types)
+    - [2.3. Type Assignment \& Type Inference](#23-type-assignment--type-inference)
+    - [2.4. Object Types](#24-object-types)
+    - [2.5. Arrays Types](#25-arrays-types)
+    - [2.6. Tuples](#26-tuples)
+    - [2.7. Enums](#27-enums)
+    - [2.8. The `any` type](#28-the-any-type)
+    - [2.9. `union` types](#29-union-types)
+    - [2.10. Literal Types](#210-literal-types)
+    - [2.11. Type aliases / Custom types](#211-type-aliases--custom-types)
+    - [2.12. Function return types \& `void`](#212-function-return-types--void)
+    - [2.13. Function as Types](#213-function-as-types)
+    - [2.14. Function types \& callbacks](#214-function-types--callbacks)
+    - [2.15. The `unknown` type](#215-the-unknown-type)
+    - [2.16. The `never` type](#216-the-never-type)
+  - [3. Section 3: The `ts` compiler (and its configs)](#3-section-3-the-ts-compiler-and-its-configs)
+    - [3.1. Using `watch` mode](#31-using-watch-mode)
+    - [3.2. Compiling the entire project / multiple files](#32-compiling-the-entire-project--multiple-files)
+    - [3.3. Including \& Excluding files](#33-including--excluding-files)
+    - [3.4. Setting a compilation target](#34-setting-a-compilation-target)
+    - [3.5. Understanding `ts` core `libs`](#35-understanding-ts-core-libs)
+    - [3.6. Working with source maps](#36-working-with-source-maps)
+    - [3.7. `rootDir` and `outDir`](#37-rootdir-and-outdir)
+    - [3.8. Stop emitting files on compilation errors](#38-stop-emitting-files-on-compilation-errors)
+    - [3.9. Strict compilation](#39-strict-compilation)
+    - [3.10. Code quality options](#310-code-quality-options)
+    - [3.11. Debugging with VSCode](#311-debugging-with-vscode)
+  - [4. Section 4: Next-generation JS \& TS](#4-section-4-next-generation-js--ts)
+    - [4.1. `let` and `const`](#41-let-and-const)
+    - [4.2. Arrow function](#42-arrow-function)
+    - [4.3. Default function parameters](#43-default-function-parameters)
+    - [4.4. The spread operator `...`](#44-the-spread-operator-)
+    - [4.5. Rest Parameters](#45-rest-parameters)
+    - [4.6. Array \& Object destructuring](#46-array--object-destructuring)
+    - [4.7. How code gets compiled](#47-how-code-gets-compiled)
+  - [5. Section 5: Classes \& Interfaces](#5-section-5-classes--interfaces)
+    - [5.1. What are `classes`?](#51-what-are-classes)
+    - [5.2. `constructor` functioins \& the `this` keyword](#52-constructor-functioins--the-this-keyword)
+    - [5.3. `private` and `public` access modifiers](#53-private-and-public-access-modifiers)
+    - [5.4. Shorthand initialization](#54-shorthand-initialization)
+    - [5.5. `readonly` properties](#55-readonly-properties)
+    - [5.6. Inheritance](#56-inheritance)
+    - [5.7. Overriding properties \& the `protected` modifier](#57-overriding-properties--the-protected-modifier)
+    - [5.8. Getters \& Setters](#58-getters--setters)
+    - [5.9. Static methods \& Properties](#59-static-methods--properties)
+    - [5.10. Abstract classes](#510-abstract-classes)
+    - [5.11. Singletons \& Private constructors](#511-singletons--private-constructors)
+    - [5.12. `interface`](#512-interface)
+    - [5.13. Using `interface` with `class`](#513-using-interface-with-class)
+    - [5.14. Why `interface`?](#514-why-interface)
+    - [5.15. Readonly interface properties](#515-readonly-interface-properties)
+    - [5.16. Extending interface](#516-extending-interface)
+    - [5.17. Interface as function type](#517-interface-as-function-type)
+    - [5.18. Optional Parameters \& Properties](#518-optional-parameters--properties)
 
-### What is TS & Why should you use it?
+## 1. Section 1. Getting started
+
+### 1.1. What is TS & Why should you use it?
 
 - A JS Supperset
 - A language building up on JS
@@ -14,7 +77,7 @@ Why TS?
 
 ![Image](assets/whyts.png)
 
-### TypeScript Advantages
+### 1.2. TypeScript Advantages
 
 Typescript adds
 
@@ -25,11 +88,11 @@ Typescript adds
 - Rich configuration options
 - Modern tooling that helps even in non-ts project
 
-### Course outline
+### 1.3. Course outline
 
 ![Image](assets/outline.png)
 
-### Boilerplat project
+### 1.4. Boilerplat project
 
 `boilerplate`
 
@@ -57,9 +120,9 @@ Typescript adds
 }
 ```
 
-## Section 2. TypeScript Basics & Basic Types
+## 2. Section 2. TypeScript Basics & Basic Types
 
-### Using types
+### 2.1. Using types
 
 Core types
 
@@ -87,7 +150,7 @@ const result = add(number1, number2);
 console.log(result);
 ```
 
-### Typescript types vs Javascript types
+### 2.2. Typescript types vs Javascript types
 
 Using `typeof` operator in `js`, checking the type at `runtime`
 
@@ -113,12 +176,12 @@ The core primitive types in TS are all lowercase!
 - `string` not `String`
 - `number` not `Number`
 
-### Type Assignment & Type Inference
+### 2.3. Type Assignment & Type Inference
 
 - Type assignment: we write type manually
 - Type inference: TS try to figure out the variable type
 
-### Object Types
+### 2.4. Object Types
 
 ```ts
 const person: {
@@ -130,7 +193,7 @@ const person: {
 };
 ```
 
-### Arrays Types
+### 2.5. Arrays Types
 
 ```ts
 const numbers: number[] = [1, 2, 3];
@@ -139,7 +202,7 @@ const strings: string[] = ["a", "b", "c"];
 const things: any[] = [1, "a", true];
 ```
 
-### Tuples
+### 2.6. Tuples
 
 ```ts
 const adminRole: [number, string] = [1, "admin"];
@@ -149,7 +212,7 @@ const csvColumns: [string, string] = ["first_name", "last_name"];
 const csvValues: [string, string] = ["Hieu", "Nguyen Trong"];
 ```
 
-### Enums
+### 2.7. Enums
 
 ```ts
 enum Role {
@@ -169,7 +232,7 @@ enum Permission = {
 const permission = Permission.READ; // READ
 ```
 
-### The `any` type
+### 2.8. The `any` type
 
 ```ts
 let nonExpectedType: any;
@@ -181,7 +244,7 @@ nonExpectedType = true;
 
 Avoid `any` as much as possible
 
-### `union` types
+### 2.9. `union` types
 
 ```ts
 let nullableNumber: number | null = 1;
@@ -202,7 +265,7 @@ function combine(input1: number | string, input2: number | string) {
 }
 ```
 
-### Literal Types
+### 2.10. Literal Types
 
 ```ts
 function checkPermision(permission: "read" | "view" | "create") {}
@@ -214,7 +277,7 @@ checkPermision("create");
 checkPermision("download"); // not allowed
 ```
 
-### Type aliases / Custom types
+### 2.11. Type aliases / Custom types
 
 It can be cumbersome to always repeat the union type like this: `number | string`
 
@@ -239,7 +302,7 @@ type User = { name: string; age: number };
 const u1: User = { name: "Max", age: 30 }; // this works!
 ```
 
-### Function return types & `void`
+### 2.12. Function return types & `void`
 
 It's a good idea to let `ts` infer the function return types.
 
@@ -281,7 +344,7 @@ function greeting(): undefined {
 `void` is the return type we should choose if the function is not
 return anything (does not have the `return` keyword)
 
-### Function as Types
+### 2.13. Function as Types
 
 ```ts
 const numbers = [1, 2, 3];
@@ -292,7 +355,7 @@ doubleFn = (n: number) => n * 2;
 numbers.map(doubleFn);
 ```
 
-### Function types & callbacks
+### 2.14. Function types & callbacks
 
 ```ts
 function customMap(
@@ -303,7 +366,7 @@ function customMap(
 customMap([1, 2, 3], (value, index) => {});
 ```
 
-### The `unknown` type
+### 2.15. The `unknown` type
 
 ```ts
 let userInput: unknown;
@@ -356,7 +419,7 @@ if (typeof userInput === "string") {
 `unknown` is better than `any` because it makes sure that you're not
 allowed to everything but you have at least some `type checking`
 
-### The `never` type
+### 2.16. The `never` type
 
 ```ts
 function generateError(message: string, code: number): never {
@@ -378,20 +441,20 @@ const result = generateError("Bad Request", 400);
 console.log(result); // the app never reach here
 ```
 
-## Section 3: The `ts` compiler (and its configs)
+## 3. Section 3: The `ts` compiler (and its configs)
 
-### Using `watch` mode
+### 3.1. Using `watch` mode
 
 - `tsc *.ts --watch`
 - `tsc *.ts -w`
 
-### Compiling the entire project / multiple files
+### 3.2. Compiling the entire project / multiple files
 
 - `tsc --init` to initialize the `ts` project
 - we get the `tsconfig.json`
 - now we only need to run `tsc`
 
-### Including & Excluding files
+### 3.3. Including & Excluding files
 
 ```json
 {
@@ -410,7 +473,7 @@ console.log(result); // the app never reach here
 }
 ```
 
-### Setting a compilation target
+### 3.4. Setting a compilation target
 
 We will look at `compilerOptions`, this will control how `ts` code
 is compiled.
@@ -418,7 +481,7 @@ is compiled.
 - `target`: which `js` version we want to compile the code, the default
   value is `es5`
 
-### Understanding `ts` core `libs`
+### 3.5. Understanding `ts` core `libs`
 
 `lib` is an option that allows you to specify which default
 objects and features `ts` knows.
@@ -443,7 +506,7 @@ give us, such as:
 
 [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)
 
-### Working with source maps
+### 3.6. Working with source maps
 
 Sourcemap helps us with debugging and development. If we set `sourceMap = true`. The `map` file basically act as a bridge which is understood by
 modern browsers and the developer tools to connect the `js` files
@@ -451,7 +514,7 @@ to the input files (`ts` file).
 
 These files help simplied the debugging process.
 
-### `rootDir` and `outDir`
+### 3.7. `rootDir` and `outDir`
 
 Often, in project, we will have the `dist` folder, it has the job of
 holding all the output (all the `js` files).
@@ -465,7 +528,7 @@ The `src` folder will hold all the input files (all the `ts` files).
 }
 ```
 
-### Stop emitting files on compilation errors
+### 3.8. Stop emitting files on compilation errors
 
 ```json
 {
@@ -476,11 +539,11 @@ The `src` folder will hold all the input files (all the `ts` files).
 Don't output `js` file if the corresponding `ts` file contains some
 errors
 
-### Strict compilation
+### 3.9. Strict compilation
 
-### Code quality options
+### 3.10. Code quality options
 
-### Debugging with VSCode
+### 3.11. Debugging with VSCode
 
 Extensions:
 
@@ -498,11 +561,11 @@ Process:
 - Start debug mode
 - Set `url` equal to the local server: `http://localhost:3000`
 
-## Section 4: Next-generation JS & TS
+## 4. Section 4: Next-generation JS & TS
 
 [Next JS & TS Feature & Supports](https://kangax.github.io/compat-table/es6/)
 
-### `let` and `const`
+### 4.1. `let` and `const`
 
 Scope in which this variable is available.
 
@@ -510,15 +573,15 @@ Scope in which this variable is available.
 - `let`: global & function & block scope
 - `const`: global & function & block scope
 
-### Arrow function
+### 4.2. Arrow function
 
-### Default function parameters
+### 4.3. Default function parameters
 
-### The spread operator `...`
+### 4.4. The spread operator `...`
 
-### Rest Parameters
+### 4.5. Rest Parameters
 
-### Array & Object destructuring
+### 4.6. Array & Object destructuring
 
 ```ts
 const numbers = [1, 2, 3, 4, 5];
@@ -526,13 +589,13 @@ const numbers = [1, 2, 3, 4, 5];
 const [first, second, ...remainNumbers] = numbers;
 ```
 
-### How code gets compiled
+### 4.7. How code gets compiled
 
 `ts` helps us compile modern `js` to old `js` if we tell `ts` to do so.
 
-## Section 5: Classes & Interfaces
+## 5. Section 5: Classes & Interfaces
 
-### What are `classes`?
+### 5.1. What are `classes`?
 
 ![Image](assets/oop.png)
 
@@ -552,7 +615,7 @@ const accounting = new Department("Accounting");
 console.log(accounting);
 ```
 
-### `constructor` functioins & the `this` keyword
+### 5.2. `constructor` functioins & the `this` keyword
 
 ```ts
 class Department {
@@ -627,7 +690,7 @@ const accountingCopy1 = { name: "DUMMY", describe: accounting.describe };
 accountingCopy1.describe(); // Department DUMMY
 ```
 
-### `private` and `public` access modifiers
+### 5.3. `private` and `public` access modifiers
 
 ```ts
 class Department {
@@ -649,7 +712,7 @@ accounting.name = "IT"; // error
 
 `public` is the default access mofidifier.
 
-### Shorthand initialization
+### 5.4. Shorthand initialization
 
 ```ts
 class Department {
@@ -661,11 +724,11 @@ class Department {
 }
 ```
 
-### `readonly` properties
+### 5.5. `readonly` properties
 
 Field value can be assigned once inside the constructor.
 
-### Inheritance
+### 5.6. Inheritance
 
 ```ts
 class Department {}
@@ -685,9 +748,9 @@ class AccountingDepartment extends Department {}
 
 Class can only inherit from 1 parent class.
 
-### Overriding properties & the `protected` modifier
+### 5.7. Overriding properties & the `protected` modifier
 
-### Getters & Setters
+### 5.8. Getters & Setters
 
 ```ts
 class Department {}
@@ -732,7 +795,7 @@ A getter is basically a property, where you execute a function
 or a method when you retrieve a value and that allows developer
 to add more complex logic.
 
-### Static methods & Properties
+### 5.9. Static methods & Properties
 
 Static props and methods allow you to add props and methods to `classes`
 which are not accessed on an `instance` of the `class`.
@@ -762,7 +825,7 @@ Utils.toUpper("ts"); // TS
 Utils.fiscalYear;
 ```
 
-### Abstract classes
+### 5.10. Abstract classes
 
 Add some methods to the `abstract class` as have all child classes
 implement those methods
@@ -774,7 +837,7 @@ the concrete implementation. The inheriting classes have to do that.
 
 The `abstract` class can't be instatiated themselves
 
-### Singletons & Private constructors
+### 5.11. Singletons & Private constructors
 
 The singleton pattern is about ensuring that you always only have
 exactly one instance of a certain class.
@@ -796,7 +859,7 @@ class DbContext {
 }
 ```
 
-### `interface`
+### 5.12. `interface`
 
 An `interface` describes the structure of an object. We can use it to
 describe how an object should look like.
@@ -827,7 +890,7 @@ user1 = {
 > We can use `interface` as a `type` to type check for objects that must
 > have this structure
 
-### Using `interface` with `class`
+### 5.13. Using `interface` with `class`
 
 `interface` can be used as a `contract` a class can implement and a class
 then has to adhere to.
@@ -850,7 +913,7 @@ class Person implements Greetable {
 `interface` is often used to share functionality amongst different
 classes not regarding their concrete implementation.
 
-### Why `interface`?
+### 5.14. Why `interface`?
 
 Well, it is useful in situations like this,
 where we know we want to have
@@ -872,7 +935,7 @@ Where we don't have to know everything about an object,
 or everything about a class. But we know that class implement
 that interface and it has all of the needed methods to us to use.
 
-### Readonly interface properties
+### 5.15. Readonly interface properties
 
 ```ts
 interface Greetable {
@@ -880,7 +943,7 @@ interface Greetable {
 }
 ```
 
-### Extending interface
+### 5.16. Extending interface
 
 ```ts
 interface Named {
@@ -892,7 +955,7 @@ interface Greetable extends Named {
 }
 ```
 
-### Interface as function type
+### 5.17. Interface as function type
 
 Interfaces can also be used to define the structure of a
 function. So basically as a replacement for the function type.
@@ -914,7 +977,7 @@ add = (n1: number, n2: number) => {
 };
 ```
 
-### Optional Parameters & Properties
+### 5.18. Optional Parameters & Properties
 
 ```ts
 interface Named {
