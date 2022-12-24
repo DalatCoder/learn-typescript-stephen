@@ -70,6 +70,7 @@
     - [Index properties](#index-properties)
     - [Function overloads](#function-overloads)
     - [Optinal Chaining](#optinal-chaining)
+    - [Nullish Coalescing](#nullish-coalescing)
 
 ## 1. Section 1. Getting started
 
@@ -1127,3 +1128,15 @@ function add(a: number | string, b: number | string) {
 ### Optinal Chaining
 
 Using `?.` operator to access nullable property
+
+### Nullish Coalescing
+
+- `??`: set default value only when left handside value equals to `null` or `undefined`
+- `||`: set default value when left handside value is `falsy` value
+
+```ts
+const userInput = null;
+
+const storeData = userInput ?? "DEFAULT";
+const storeData1 = userInput || "DEFAULT";
+```
