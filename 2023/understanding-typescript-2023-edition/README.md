@@ -71,6 +71,12 @@
     - [Function overloads](#function-overloads)
     - [Optinal Chaining](#optinal-chaining)
     - [Nullish Coalescing](#nullish-coalescing)
+  - [Section 7: Generics](#section-7-generics)
+    - [What are `generics`?](#what-are-generics)
+    - [Creating a `generic` function](#creating-a-generic-function)
+    - [Working with `constraints`](#working-with-constraints)
+    - [The `keyof` constraint](#the-keyof-constraint)
+    - [Generic classes](#generic-classes)
 
 ## 1. Section 1. Getting started
 
@@ -1139,4 +1145,194 @@ const userInput = null;
 
 const storeData = userInput ?? "DEFAULT";
 const storeData1 = userInput || "DEFAULT";
+```
+
+## Section 7: Generics
+
+### What are `generics`?
+
+```ts
+const names = ["Max", "Manuel"]; // string[]
+const names = []; // any[]
+
+const names: Array<string> = []; // string[]
+
+const promise: Promise<string> = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("This is done");
+  }, 2000);
+});
+
+promise.then((data) => {
+  data.split(" "); // data is string type
+});
+```
+
+A generic type is a type which is kind of connected which some
+other type and is really flexible regarding which exact type that
+other type is.
+
+A certain type, in this case the `Array` type might simply work
+better or work at all if you providde an additional information
+about a type of data that's provided in this `Array` type
+
+Generic types help you to get additional type information if you've
+got a more complex class or more complex function that does something
+with the data that's coming in in a way where it doesn't really care
+about the data being of one particular type, but where you want
+to store the type information of the incoming data to get better
+typescript support.
+
+### Creating a `generic` function
+
+We want to create a function to merge 2 objects and return new
+object
+
+```ts
+function merge(objA: object, objB: object) {
+  return Object.assign(objA, objB);
+}
+
+class Student {}
+class Teacher {}
+
+const s1 = new Student();
+const s2 = new Student();
+
+const s3 = merge(s1, s2); // type 'Object'
+
+const t1 = new Teacher();
+const t2 = new Teachner();
+
+const t3 = merge(t1, t2); // type 'Object'
+
+const s4 = s3 as Student; // manually cast
+const t4 = t3 as Student; // manually cast
+```
+
+So, how can we continue to use the `merge` function and
+get better type support.
+
+Write generic function
+
+```ts
+function merge<T, U>(objA: T, objB: U) {
+  return Oject.assign(objA, objB);
+}
+
+class Student {}
+class Teacher {}
+
+const s1 = new Student();
+const s2 = new Student();
+
+const s3 = merge<Student, Student>(s1, s2); // type 'Student'
+```
+
+### Working with `constraints`
+
+Restrict the type of generic types.
+
+```ts
+function merge<T extends object, U extends object>(objA: T, objB: U) {
+  return Oject.assign(objA, objB);
+}
+```
+
+Another generic function
+
+```ts
+interface Lengthy {
+  length: number;
+}
+
+function countAndDescribe<T exntends Lengthy>(element: T): [T, string] {
+  let descriptionText = 'Got no value.'
+
+  if (element.length === 1) {
+    descriptionText = 'Got 1 element.';
+  } else if (element.length > 1) {
+    descriptionText = 'Got ' + element.length + ' elements';
+  }
+
+  // tuple
+  return [element, descriptionText]
+}
+
+console.log(countAndDescribe("Hello World"))
+console.log(countAndDescribe([1, 2, 3]))
+```
+
+With generic type we can be more flexible, we don't care about the
+exact type. We only care about the fact that its type has a length
+property (through constraint)
+
+### The `keyof` constraint
+
+```ts
+function extractAndConvert<T extends object, U keyof T>(obj: T, key: U) {
+  return obj[key];
+}
+
+const obj = { name: 'hieu' }
+extractAndConvert(obj, 'name')
+```
+
+### Generic classes
+
+```ts
+class DataStorage<T> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItem() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage<string>();
+const numberStorage = new DataStorage<number>();
+
+class Student {}
+const studentStorage = new StudentStorage<Student>();
+
+// error when removing before object is reference type
+studentStorage.removeItem({ name: "Max" });
+```
+
+To fix the `removeItem` method when working with `reference type`. We
+restrict the `DataStorage` to only work with `primitive type`
+
+```ts
+class DataStorage<T extends string | number | boolean> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItem() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage<string>();
+const numberStorage = new DataStorage<number>();
+
+class Student {}
+const studentStorage = new StudentStorage<Student>();
+
+// error when removing before object is reference type
+studentStorage.removeItem({ name: "Max" });
 ```
