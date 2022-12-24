@@ -62,6 +62,14 @@
     - [5.16. Extending interface](#516-extending-interface)
     - [5.17. Interface as function type](#517-interface-as-function-type)
     - [5.18. Optional Parameters \& Properties](#518-optional-parameters--properties)
+  - [Section 6: Advanced Types](#section-6-advanced-types)
+    - [Intersection Types](#intersection-types)
+    - [Type Guards](#type-guards)
+    - [Discriminated Unions](#discriminated-unions)
+    - [Type Casting](#type-casting)
+    - [Index properties](#index-properties)
+    - [Function overloads](#function-overloads)
+    - [Optinal Chaining](#optinal-chaining)
 
 ## 1. Section 1. Getting started
 
@@ -993,3 +1001,127 @@ interface Named {
   }
 }
 ```
+
+## Section 6: Advanced Types
+
+### Intersection Types
+
+Intersection types allow us to combine other types
+
+```ts
+type Admin = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee = {
+  name: string;
+  startDate: Date;
+};
+
+type ElevatedEmployee = Admin & Employee;
+
+// equals to
+type ElevatedEmployee = {
+  name: string;
+  privileges: string[];
+  startDate: Date;
+};
+```
+
+### Type Guards
+
+Type guards help us with `union` type (`number | string`). We can
+use type guard to get exact type that we use at runtime.
+
+Some type guards:
+
+- `typeof` operator
+- `in` operator to check for property inside of an object
+- `instanceof`
+
+Type guards is just a term that describes the idea or approach of
+checking if a certain property or method exists before you try to
+use it
+
+```ts
+function add(n1: string | number, n2: string | number) {
+  // type guards using typeof operator
+  if (typeof n1 === "number" && typeof n2 === "number") {
+  }
+}
+
+function test(a: Admin | Employee) {
+  if ("privileges" in a) {
+    // type Admin
+  }
+}
+```
+
+### Discriminated Unions
+
+It's a pattern which you can use when working with union types
+that makes implementing type guards easier.
+
+```ts
+interface Bird {
+  type: "bird"; // literal type
+  flyingSpeed: number;
+}
+
+interface Horse {
+  type: "horse"; // literal type
+  runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+  switch (animal.type) {
+    case "bird": {
+    }
+
+    case "horse": {
+    }
+  }
+}
+```
+
+### Type Casting
+
+Type casting helps you tell `ts` that some value is of a specific type.
+
+2 ways of type casting:
+
+- prefix with `<[Type]>`
+- using `as`
+
+```ts
+const p = document.querySelector("p");
+const p1 = <HtmlParagraphElement>document.getElementById("id");
+const input = document.getElementById("input") as HtmlInputElement;
+```
+
+### Index properties
+
+```ts
+interface ErrorContainer {
+  [prop: string]: string;
+}
+```
+
+### Function overloads
+
+```ts
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+function add(a: number | string, b: number | string) {
+  if (typeof a === "string" || typeof b === "string") {
+    return a.toString() + b.toString();
+  }
+
+  return a + b;
+}
+```
+
+### Optinal Chaining
