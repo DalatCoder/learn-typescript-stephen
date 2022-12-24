@@ -77,6 +77,9 @@
     - [Working with `constraints`](#working-with-constraints)
     - [The `keyof` constraint](#the-keyof-constraint)
     - [Generic classes](#generic-classes)
+    - [Generic utility types](#generic-utility-types)
+    - [Generic types vs Union types](#generic-types-vs-union-types)
+    - [Sumarry](#sumarry)
 
 ## 1. Section 1. Getting started
 
@@ -1336,3 +1339,47 @@ const studentStorage = new StudentStorage<Student>();
 // error when removing before object is reference type
 studentStorage.removeItem({ name: "Max" });
 ```
+
+### Generic utility types
+
+[Learn more](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+
+```ts
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
+}
+
+function createCourseGoal(
+  title: string,
+  description: string,
+  date: Date
+): CourseGoal {
+  // all props are optional
+  let courseGoal: Partial<CourseGoal> = {};
+
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = completeUntil;
+
+  return courseGoal as CourseGoal;
+}
+
+// lock array
+const names: Readonly<string[]> = ["Max", "Sports"];
+
+// error
+names.push("something");
+names.pop();
+```
+
+### Generic types vs Union types
+
+### Sumarry
+
+Generic type gives use flexibility combined with type safety.
+We're flexible regarding the values we pass in or the values we use
+in a class but we got full type support for what we then do with the
+class or with the result of a generic function because `ts` then knows which
+concrete type we pass in when we call the function.
