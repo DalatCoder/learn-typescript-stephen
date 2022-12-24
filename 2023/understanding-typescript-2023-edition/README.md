@@ -62,24 +62,25 @@
     - [5.16. Extending interface](#516-extending-interface)
     - [5.17. Interface as function type](#517-interface-as-function-type)
     - [5.18. Optional Parameters \& Properties](#518-optional-parameters--properties)
-  - [Section 6: Advanced Types](#section-6-advanced-types)
-    - [Intersection Types](#intersection-types)
-    - [Type Guards](#type-guards)
-    - [Discriminated Unions](#discriminated-unions)
-    - [Type Casting](#type-casting)
-    - [Index properties](#index-properties)
-    - [Function overloads](#function-overloads)
-    - [Optinal Chaining](#optinal-chaining)
-    - [Nullish Coalescing](#nullish-coalescing)
-  - [Section 7: Generics](#section-7-generics)
-    - [What are `generics`?](#what-are-generics)
-    - [Creating a `generic` function](#creating-a-generic-function)
-    - [Working with `constraints`](#working-with-constraints)
-    - [The `keyof` constraint](#the-keyof-constraint)
-    - [Generic classes](#generic-classes)
-    - [Generic utility types](#generic-utility-types)
-    - [Generic types vs Union types](#generic-types-vs-union-types)
-    - [Sumarry](#sumarry)
+  - [6. Section 6: Advanced Types](#6-section-6-advanced-types)
+    - [6.1. Intersection Types](#61-intersection-types)
+    - [6.2. Type Guards](#62-type-guards)
+    - [6.3. Discriminated Unions](#63-discriminated-unions)
+    - [6.4. Type Casting](#64-type-casting)
+    - [6.5. Index properties](#65-index-properties)
+    - [6.6. Function overloads](#66-function-overloads)
+    - [6.7. Optinal Chaining](#67-optinal-chaining)
+    - [6.8. Nullish Coalescing](#68-nullish-coalescing)
+  - [7. Section 7: Generics](#7-section-7-generics)
+    - [7.1. What are `generics`?](#71-what-are-generics)
+    - [7.2. Creating a `generic` function](#72-creating-a-generic-function)
+    - [7.3. Working with `constraints`](#73-working-with-constraints)
+    - [7.4. The `keyof` constraint](#74-the-keyof-constraint)
+    - [7.5. Generic classes](#75-generic-classes)
+    - [7.6. Generic utility types](#76-generic-utility-types)
+    - [7.7. Generic types vs Union types](#77-generic-types-vs-union-types)
+    - [7.8. Sumarry](#78-sumarry)
+  - [8. Section 8: Decorators](#8-section-8-decorators)
 
 ## 1. Section 1. Getting started
 
@@ -1012,9 +1013,9 @@ interface Named {
 }
 ```
 
-## Section 6: Advanced Types
+## 6. Section 6: Advanced Types
 
-### Intersection Types
+### 6.1. Intersection Types
 
 Intersection types allow us to combine other types
 
@@ -1039,7 +1040,7 @@ type ElevatedEmployee = {
 };
 ```
 
-### Type Guards
+### 6.2. Type Guards
 
 Type guards help us with `union` type (`number | string`). We can
 use type guard to get exact type that we use at runtime.
@@ -1068,7 +1069,7 @@ function test(a: Admin | Employee) {
 }
 ```
 
-### Discriminated Unions
+### 6.3. Discriminated Unions
 
 It's a pattern which you can use when working with union types
 that makes implementing type guards easier.
@@ -1097,7 +1098,7 @@ function moveAnimal(animal: Animal) {
 }
 ```
 
-### Type Casting
+### 6.4. Type Casting
 
 Type casting helps you tell `ts` that some value is of a specific type.
 
@@ -1112,7 +1113,7 @@ const p1 = <HtmlParagraphElement>document.getElementById("id");
 const input = document.getElementById("input") as HtmlInputElement;
 ```
 
-### Index properties
+### 6.5. Index properties
 
 ```ts
 interface ErrorContainer {
@@ -1120,7 +1121,7 @@ interface ErrorContainer {
 }
 ```
 
-### Function overloads
+### 6.6. Function overloads
 
 ```ts
 function add(a: number, b: number): number;
@@ -1134,11 +1135,11 @@ function add(a: number | string, b: number | string) {
 }
 ```
 
-### Optinal Chaining
+### 6.7. Optinal Chaining
 
 Using `?.` operator to access nullable property
 
-### Nullish Coalescing
+### 6.8. Nullish Coalescing
 
 - `??`: set default value only when left handside value equals to `null` or `undefined`
 - `||`: set default value when left handside value is `falsy` value
@@ -1150,9 +1151,9 @@ const storeData = userInput ?? "DEFAULT";
 const storeData1 = userInput || "DEFAULT";
 ```
 
-## Section 7: Generics
+## 7. Section 7: Generics
 
-### What are `generics`?
+### 7.1. What are `generics`?
 
 ```ts
 const names = ["Max", "Manuel"]; // string[]
@@ -1186,7 +1187,7 @@ about the data being of one particular type, but where you want
 to store the type information of the incoming data to get better
 typescript support.
 
-### Creating a `generic` function
+### 7.2. Creating a `generic` function
 
 We want to create a function to merge 2 objects and return new
 object
@@ -1232,7 +1233,7 @@ const s2 = new Student();
 const s3 = merge<Student, Student>(s1, s2); // type 'Student'
 ```
 
-### Working with `constraints`
+### 7.3. Working with `constraints`
 
 Restrict the type of generic types.
 
@@ -1270,7 +1271,7 @@ With generic type we can be more flexible, we don't care about the
 exact type. We only care about the fact that its type has a length
 property (through constraint)
 
-### The `keyof` constraint
+### 7.4. The `keyof` constraint
 
 ```ts
 function extractAndConvert<T extends object, U keyof T>(obj: T, key: U) {
@@ -1281,7 +1282,7 @@ const obj = { name: 'hieu' }
 extractAndConvert(obj, 'name')
 ```
 
-### Generic classes
+### 7.5. Generic classes
 
 ```ts
 class DataStorage<T> {
@@ -1340,7 +1341,7 @@ const studentStorage = new StudentStorage<Student>();
 studentStorage.removeItem({ name: "Max" });
 ```
 
-### Generic utility types
+### 7.6. Generic utility types
 
 [Learn more](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 
@@ -1374,12 +1375,16 @@ names.push("something");
 names.pop();
 ```
 
-### Generic types vs Union types
+### 7.7. Generic types vs Union types
 
-### Sumarry
+### 7.8. Sumarry
 
 Generic type gives use flexibility combined with type safety.
 We're flexible regarding the values we pass in or the values we use
 in a class but we got full type support for what we then do with the
 class or with the result of a generic function because `ts` then knows which
 concrete type we pass in when we call the function.
+
+## 8. Section 8: Decorators
+
+Feature that useful for `meta-programming`
