@@ -96,6 +96,7 @@
     - [Managing Application State with Singletons](#managing-application-state-with-singletons)
     - [More classes \& Custom types](#more-classes--custom-types)
     - [Filtering Projects with Enums](#filtering-projects-with-enums)
+    - [Adding Inheritance \& Generics](#adding-inheritance--generics)
 
 ## 1. Section 1. Getting started
 
@@ -2595,4 +2596,309 @@ class ProjectInput {
 const projectInput = new ProjectInput();
 const activeProjectList = new ProjectList("active");
 const finishedProjectList = new ProjectList("finished");
+```
+
+### Adding Inheritance & Generics
+
+Add base class to hold some common information in `ProjectList` and `ProjectInput` class called `Component`.
+
+This is the `base Component` class which all other component inherit and override
+the `render` method. So what are the correct types of all fields below.
+Instead of `concrete type`, we should use `generic` for flexibility.
+
+```ts
+/**
+ * Base Component
+ */
+class Component {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+}
+```
+
+So, the base component looks like this
+
+```ts
+/**
+ * Base Component
+ */
+abstract class Component<T extends HTMLElement, U extends HTMLElement> {
+  templateElement: HTMLTemplateElement;
+  hostElement: T;
+  element: U;
+
+  constructor(
+    templateId: string,
+    hostElementId: string,
+    insertAtStart: boolean,
+    newElementId?: string
+  ) {
+    this.templateElement = document.getElementById(
+      templateId
+    )! as HTMLTemplateElement;
+
+    this.hostElement = document.getElementById(hostElementId)! as T;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    );
+
+    this.element = importedNode.firstElementChild as U;
+    this.element.id += newElementId ?? "";
+
+    /**
+     * Insert template content into the DOM at hostElement position
+     */
+    this.attach(insertAtStart);
+
+    /**
+     * Setup some initial configuration
+     */
+    // this.configure();
+
+    /**
+     * Render UI
+     */
+    // this.render();
+  }
+
+  private attach(insertAtBeginning: boolean) {
+    if (insertAtBeginning) {
+      this.hostElement.insertAdjacentElement("afterbegin", this.element);
+    } else {
+      this.hostElement.insertAdjacentElement("beforeend", this.element);
+    }
+  }
+
+  abstract configure(): void;
+  abstract render(): void;
+}
+```
+
+For the `configure` and `render` methods, it's best to call these methods
+inside `Component constructor`. However, in child `component class`, there
+is chance that the child component need to setup something before it call
+`configure` and `render`. So, it's safer to let the `child component` call
+`configure` and `render` like the code below
+
+```ts
+/**
+ * Project List Class | Render List
+ */
+class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+  projects: Project[];
+
+  constructor(public type: "active" | "finished") {
+    super("project-list", "app", false, `${type}-projects`);
+
+    /**
+     * Some initial setup works
+     */
+    this.projects = [];
+
+    /**
+     * It's safer to let the child component called configure and render methods
+     * Because the child component need to setup some initial state first
+     */
+    this.configure();
+    this.render();
+  }
+
+  configure(): void {
+    /**
+     * Subcribes to state changes
+     */
+    ProjectState.getInstance().addListener((projects: Project[]) => {
+      this.projects = projects.filter((project) => {
+        if (this.type === "active") {
+          return project.status === ProjectStatus.Active;
+        }
+
+        return project.status === ProjectStatus.Finished;
+      });
+      this.renderProjects();
+    });
+  }
+
+  render() {
+    const listId = `${this.type}-projects-list`;
+
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    listEl.innerHTML = "";
+
+    for (const project of this.projects) {
+      const listItem = document.createElement("li");
+      listItem.textContent = project.title;
+      listEl.appendChild(listItem);
+    }
+  }
+}
+```
+
+```ts
+/**
+ * Project Input Class | Handle Form
+ */
+class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    super("project-input", "app", true, "user-input");
+
+    /**
+     * Some initial works
+     */
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.render();
+  }
+
+  configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  render(): void {}
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: +enteredPeople,
+      required: true,
+      min: 1,
+    };
+
+    if (
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again!");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
+  /**
+   * Handle form submission
+   * @param event Event
+   */
+  @Autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    const userInput = this.gatherUserInput();
+
+    /**
+     * Only if userInput is a tuple
+     */
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      ProjectState.getInstance().addProject(title, description, people);
+
+      this.clearInputs();
+    }
+  }
+}
+```
+
+And then, for the reusability of the `state management`, we should refactor it like the code below.
+
+```ts
+/**
+ * Define Listener Type
+ */
+type Listener<T> = (items: T[]) => void;
+
+/**
+ * Project State Management
+ */
+class State<T> {
+  protected listeners: Listener<T>[] = [];
+
+  addListener(listernFn: Listener<T>) {
+    this.listeners.push(listernFn);
+  }
+}
+```
+
+And then, use the base `State<T>` for managing `projects` list
+
+```ts
+class ProjectState extends State<Project> {
+  private projects: Project[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = new Project( 
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active
+     );
+
+    this.projects.push(newProject);
+
+    /**
+     * Notify all listeners
+     */
+    for (const listernFn of this.listeners) {
+      listernFn(this.projects.slice());
+    }
+  }
+}
 ```
