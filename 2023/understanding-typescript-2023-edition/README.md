@@ -94,6 +94,7 @@
     - [Creating a re-usable validation functionality](#creating-a-re-usable-validation-functionality)
     - [Rendering Project Lists](#rendering-project-lists)
     - [Managing Application State with Singletons](#managing-application-state-with-singletons)
+    - [More classes \& Custom types](#more-classes--custom-types)
 
 ## 1. Section 1. Getting started
 
@@ -2128,3 +2129,83 @@ class ProjectList {
 ```
 
 Now, everytime the `ProjectState.getInstance().addProject(title, description, people)` is called, we get new project list re-render itself.
+
+### More classes & Custom types
+
+Define type for `Project`
+
+```ts
+/**
+ * Define Project Type
+ */
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+```
+
+Define type for `listener` function
+
+```ts
+/**
+ * Define Listener Type
+ */
+type Listener = (items: Project[]) => void;
+```
+
+Using `type` in Project Manager Singleton
+
+```ts
+/**
+ * Project State Management
+ */
+class ProjectState {
+  private listeners: Listener[] = [];
+  private projects: Project[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addListener(listernFn: Listener) {
+    this.listeners.push(listernFn);
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active
+    );
+
+    this.projects.push(newProject);
+
+    /**
+     * Notify all listeners
+     */
+    for (const listernFn of this.listeners) {
+      listernFn(this.projects.slice());
+    }
+  }
+}
+```
