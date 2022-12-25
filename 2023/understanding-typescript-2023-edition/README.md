@@ -81,6 +81,11 @@
     - [7.7. Generic types vs Union types](#77-generic-types-vs-union-types)
     - [7.8. Sumarry](#78-sumarry)
   - [8. Section 8: Decorators](#8-section-8-decorators)
+    - [A first class decorator](#a-first-class-decorator)
+    - [Working with `decorator factories`](#working-with-decorator-factories)
+    - [Building more useful decorators](#building-more-useful-decorators)
+    - [Adding multiple decorators](#adding-multiple-decorators)
+    - [Diving into `property decorators`](#diving-into-property-decorators)
 
 ## 1. Section 1. Getting started
 
@@ -1388,3 +1393,212 @@ concrete type we pass in when we call the function.
 ## 8. Section 8: Decorators
 
 Feature that useful for `meta-programming`
+
+Setup `decorators` with `ts`
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6"
+  },
+  "experimentalDecorators": true
+}
+```
+
+### A first class decorator
+
+Normal class
+
+```ts
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Creating person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+```
+
+Adding `decorators`.
+
+A `decorator` is just a `function`, a function that we apply to something, for
+example to a `class` in a certain way.
+
+`Decorator` receives arguments, how many arguments depends on where you use
+the `decorator`
+
+- add to class: `1` argument, it is the `ref` to the `constructor` (`class` is just syntactic sugar for `constructor` function) of that class
+
+`Decorator` executes when your class is defined, not when it is instantiated.
+You don't need to instantiate your class at all.
+
+```ts
+function Logger(constructor: Function) {
+  console.log("Logging...");
+  console.log(constructor);
+}
+
+@Logger
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Creating person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+```
+
+### Working with `decorator factories`
+
+`Decorator factories` return a `decorator` function but allows us to configure
+it when we assign it as a `decorator` to something.
+
+The advantage to this `factory` decorator is that we can now pass in values
+which will be used by that inner returned decorator function.
+
+Using `decorator factories` can give us more powerful and more possibilities
+of configuring what the `decorator` then does internally
+
+```ts
+function Logger(logString) {
+  return function (constructor: Function) {
+    console.log("Logging..." + logString);
+    console.log(constructor);
+  };
+}
+
+@Logger("LOGGING - PERSON")
+class Person {
+  name = "Max";
+
+  constructor() {
+    console.log("Creating person object...");
+  }
+}
+
+const person = new Person();
+console.log(person);
+```
+
+### Building more useful decorators
+
+Look at `@Component` from `angular`
+
+```ts
+function WithTemplate(template: string, hookId: string) {
+  return function (constructor: Function) {
+    const hookEl = document.getElementById(hookId);
+    const instance = new constructor();
+
+    if (hookEl) {
+      hookEl.innerHTML = template;
+    }
+  };
+}
+
+@WithTemplate("", "app")
+class Student {
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+```
+
+### Adding multiple decorators
+
+You can add more than one decorator to a class or anywhere else use
+can use the decorator.
+
+The inner decorator function order is from bottom up:
+
+- `WithTemplate` run first
+- Then `Logger`
+
+The factory order is from top to bottom
+
+- `Logger factory` run first
+- Then `WithTemplate factory`
+
+```ts
+@Logger("LOG")
+@WithTemplate("", "")
+class Student {}
+```
+
+### Diving into `property decorators`
+
+We can add `decorator` to
+
+- `class`
+- `property`
+- `getter`, `setter`
+- `method`
+- `parameter`
+
+```ts
+function Log(target: any, propertyName: string) {
+  console.log("Property decorator");
+  console.log(target, propertyName);
+}
+
+function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log("accessor decorator");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function Log3(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log("method decorator");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function Log4(target: any, name: string, position: number) {
+  console.log("param decorator");
+  console.log(target);
+  console.log(name);
+  console.log(position);
+}
+
+class Product {
+  @Log
+  title: string;
+
+  private _price: number;
+
+  @Log2
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error("Invalid price - should be positive");
+    }
+  }
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  @Log3
+  getPriceWithTax(@Log4 tax: number) {
+    return this.price * (1 + tax);
+  }
+}
+```
+
+`Decorators` does not run at runtime when you instantiate an instance.
+`Decorators` allow you to do additional behind the scenes setup work when
+`a class is defined`. That's the idea behind decorators or that's their core
+use case. They're not eventListener you add to something so that when you
+work with a property you can run some code. You can use `decorators` to
+setup some works behind the scene when class is defined, to add extra metadata
+or store some data about a property somewhere else in your project.
