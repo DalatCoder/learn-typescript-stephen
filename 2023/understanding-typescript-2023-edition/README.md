@@ -112,6 +112,9 @@
     - [Installing `webpack` \& important dependencies](#installing-webpack--important-dependencies)
     - [Configuration](#configuration)
     - [Adding a production workflow](#adding-a-production-workflow)
+  - [Section 12: 3rd party libraries \& typescript](#section-12-3rd-party-libraries--typescript)
+    - [Using JS libraries with `ts`](#using-js-libraries-with-ts)
+    - [using `declare` as a `Last Resort`](#using-declare-as-a-last-resort)
 
 ## 1. Section 1. Getting started
 
@@ -4207,4 +4210,39 @@ Complete script & dependency packages
     "clean-webpack-plugin": "^3.0.0"
   }
 }
+```
+
+## Section 12: 3rd party libraries & typescript
+
+Utilizing typescript's power
+
+### Using JS libraries with `ts`
+
+Example of using `lodash`
+
+Install lodash lib: `npm i lodash`
+
+```ts
+import _ from "lodash";
+```
+
+To get types support, we need to install the `@types/lodash` package: `npm install @types/lodash -D`
+
+### using `declare` as a `Last Resort`
+
+```html
+<script>
+  var GLOBAL = "GLOBAL";
+</script>
+```
+
+```ts
+console.log(GLOBAL); // not found ???
+```
+
+Using `declare` for telling `ts` that: don't worry, this variable will exist.
+
+```ts
+declare var GLOBAL: string;
+console.log(GLOBAL);
 ```
