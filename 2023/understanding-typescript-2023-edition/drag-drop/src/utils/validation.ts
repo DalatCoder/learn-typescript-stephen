@@ -1,51 +1,46 @@
-namespace App {
-  /**
-   * Input Validation
-   */
-  export interface Validatable {
-    value: string | number;
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-    min?: number;
-    max?: number;
+/**
+ * Input Validation
+ */
+export interface Validatable {
+  value: string | number;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+export function validate(validatableInput: Validatable) {
+  let isValid = true;
+
+  if (validatableInput.required) {
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
   }
 
-  export function validate(validatableInput: Validatable) {
-    let isValid = true;
-
-    if (validatableInput.required) {
+  if (typeof validatableInput.value === "string") {
+    /**
+     * Only false if minLengh = null | undefined (0 is OK)
+     */
+    if (validatableInput.minLength != null) {
       isValid =
-        isValid && validatableInput.value.toString().trim().length !== 0;
+        isValid && validatableInput.value.length >= validatableInput.minLength;
     }
 
-    if (typeof validatableInput.value === "string") {
-      /**
-       * Only false if minLengh = null | undefined (0 is OK)
-       */
-      if (validatableInput.minLength != null) {
-        isValid =
-          isValid &&
-          validatableInput.value.length >= validatableInput.minLength;
-      }
-
-      if (validatableInput.maxLength != null) {
-        isValid =
-          isValid &&
-          validatableInput.value.length <= validatableInput.maxLength;
-      }
+    if (validatableInput.maxLength != null) {
+      isValid =
+        isValid && validatableInput.value.length <= validatableInput.maxLength;
     }
-
-    if (typeof validatableInput.value === "number") {
-      if (validatableInput.min != null) {
-        isValid = isValid && validatableInput.value >= validatableInput.min;
-      }
-
-      if (validatableInput.max != null) {
-        isValid = isValid && validatableInput.value <= validatableInput.max;
-      }
-    }
-
-    return isValid;
   }
+
+  if (typeof validatableInput.value === "number") {
+    if (validatableInput.min != null) {
+      isValid = isValid && validatableInput.value >= validatableInput.min;
+    }
+
+    if (validatableInput.max != null) {
+      isValid = isValid && validatableInput.value <= validatableInput.max;
+    }
+  }
+
+  return isValid;
 }

@@ -1,95 +1,96 @@
-/// <reference path="base.ts" />
+import { Component } from "./base.js";
+import { Validatable, validate } from "../utils/validation.js";
+import { Autobind } from "../decorators/autobind.js";
+import { ProjectState } from "../state/project.js";
 
-namespace App {
+/**
+ * Project Input Class | Handle Form
+ */
+export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    super("project-input", "app", true, "user-input");
+
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+    this.render();
+  }
+
+  configure() {
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+
+  render(): void {}
+
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
+
+    const titleValidatable: Validatable = {
+      value: enteredTitle,
+      required: true,
+    };
+
+    const descriptionValidatable: Validatable = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+
+    const peopleValidatable: Validatable = {
+      value: +enteredPeople,
+      required: true,
+      min: 1,
+    };
+
+    if (
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
+    ) {
+      alert("Invalid input, please try again!");
+      return;
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = "";
+    this.descriptionInputElement.value = "";
+    this.peopleInputElement.value = "";
+  }
+
   /**
-   * Project Input Class | Handle Form
+   * Handle form submission
+   * @param event Event
    */
-  export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
-    titleInputElement: HTMLInputElement;
-    descriptionInputElement: HTMLInputElement;
-    peopleInputElement: HTMLInputElement;
-
-    constructor() {
-      super("project-input", "app", true, "user-input");
-
-      this.titleInputElement = this.element.querySelector(
-        "#title"
-      )! as HTMLInputElement;
-      this.descriptionInputElement = this.element.querySelector(
-        "#description"
-      )! as HTMLInputElement;
-      this.peopleInputElement = this.element.querySelector(
-        "#people"
-      )! as HTMLInputElement;
-
-      this.configure();
-      this.render();
-    }
-
-    configure() {
-      this.element.addEventListener("submit", this.submitHandler);
-    }
-
-    render(): void {}
-
-    private gatherUserInput(): [string, string, number] | void {
-      const enteredTitle = this.titleInputElement.value;
-      const enteredDescription = this.descriptionInputElement.value;
-      const enteredPeople = this.peopleInputElement.value;
-
-      const titleValidatable: Validatable = {
-        value: enteredTitle,
-        required: true,
-      };
-
-      const descriptionValidatable: Validatable = {
-        value: enteredDescription,
-        required: true,
-        minLength: 5,
-      };
-
-      const peopleValidatable: Validatable = {
-        value: +enteredPeople,
-        required: true,
-        min: 1,
-      };
-
-      if (
-        !validate(titleValidatable) ||
-        !validate(descriptionValidatable) ||
-        !validate(peopleValidatable)
-      ) {
-        alert("Invalid input, please try again!");
-        return;
-      } else {
-        return [enteredTitle, enteredDescription, +enteredPeople];
-      }
-    }
-
-    private clearInputs() {
-      this.titleInputElement.value = "";
-      this.descriptionInputElement.value = "";
-      this.peopleInputElement.value = "";
-    }
+  @Autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    const userInput = this.gatherUserInput();
 
     /**
-     * Handle form submission
-     * @param event Event
+     * Only if userInput is a tuple
      */
-    @Autobind
-    private submitHandler(event: Event) {
-      event.preventDefault();
-      const userInput = this.gatherUserInput();
+    if (Array.isArray(userInput)) {
+      const [title, description, people] = userInput;
+      ProjectState.getInstance().addProject(title, description, people);
 
-      /**
-       * Only if userInput is a tuple
-       */
-      if (Array.isArray(userInput)) {
-        const [title, description, people] = userInput;
-        ProjectState.getInstance().addProject(title, description, people);
-
-        this.clearInputs();
-      }
+      this.clearInputs();
     }
   }
 }

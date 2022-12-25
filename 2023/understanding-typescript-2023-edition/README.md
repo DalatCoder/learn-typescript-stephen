@@ -104,6 +104,7 @@
     - [Writing module code](#writing-module-code)
     - [Working with `namespace`](#working-with-namespace)
     - [Complete `namespace` structure](#complete-namespace-structure)
+    - [Using `ES modules`](#using-es-modules)
 
 ## 1. Section 1. Getting started
 
@@ -3914,3 +3915,47 @@ Config `tsconfig.json` to bundle file
 ### Complete `namespace` structure
 
 ![Image](assets/namespace1.png)
+
+### Using `ES modules`
+
+Modern browsers support `es module` natively, where the browser
+will then basically download all the dependencies of a file when
+it executes.
+
+Config `tsconfig.json` for supporting `es6 module`
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    "sourceMap": true,
+    // "outFile": "./dist/bundle.js",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
+}
+```
+
+Tell `<script>` to load module
+
+```html
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>ProjectManager</title>
+  <link rel="stylesheet" href="app.css" />
+  <script type="module" src="dist/app.js"></script>
+</head>
+```
