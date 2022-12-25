@@ -81,31 +81,33 @@
     - [7.7. Generic types vs Union types](#77-generic-types-vs-union-types)
     - [7.8. Sumarry](#78-sumarry)
   - [8. Section 8: Decorators](#8-section-8-decorators)
-    - [A first class decorator](#a-first-class-decorator)
-    - [Working with `decorator factories`](#working-with-decorator-factories)
-    - [Building more useful decorators](#building-more-useful-decorators)
-    - [Adding multiple decorators](#adding-multiple-decorators)
-    - [Diving into `property decorators`](#diving-into-property-decorators)
-  - [Section 9: Drag \& Drop Project](#section-9-drag--drop-project)
-    - [DOM element selection \& OOP rendering](#dom-element-selection--oop-rendering)
-    - [Interacting with DOM elements](#interacting-with-dom-elements)
-    - [Creating \& Using an `AutoBind` decorator](#creating--using-an-autobind-decorator)
-    - [Fetching User Input](#fetching-user-input)
-    - [Creating a re-usable validation functionality](#creating-a-re-usable-validation-functionality)
-    - [Rendering Project Lists](#rendering-project-lists)
-    - [Managing Application State with Singletons](#managing-application-state-with-singletons)
-    - [More classes \& Custom types](#more-classes--custom-types)
-    - [Filtering Projects with Enums](#filtering-projects-with-enums)
-    - [Adding Inheritance \& Generics](#adding-inheritance--generics)
-    - [Rendering Project Items with a Class](#rendering-project-items-with-a-class)
-    - [Using `getter`](#using-getter)
-    - [Utilizing interfaces to implement Drag \& Drop](#utilizing-interfaces-to-implement-drag--drop)
-  - [Section 10: Modules \& Namespaces](#section-10-modules--namespaces)
-    - [Writing module code](#writing-module-code)
-    - [Working with `namespace`](#working-with-namespace)
-    - [Complete `namespace` structure](#complete-namespace-structure)
-    - [Using `ES modules`](#using-es-modules)
-    - [Understanding various `import & export` syntaxes](#understanding-various-import--export-syntaxes)
+    - [8.1. A first class decorator](#81-a-first-class-decorator)
+    - [8.2. Working with `decorator factories`](#82-working-with-decorator-factories)
+    - [8.3. Building more useful decorators](#83-building-more-useful-decorators)
+    - [8.4. Adding multiple decorators](#84-adding-multiple-decorators)
+    - [8.5. Diving into `property decorators`](#85-diving-into-property-decorators)
+  - [9. Section 9: Drag \& Drop Project](#9-section-9-drag--drop-project)
+    - [9.1. DOM element selection \& OOP rendering](#91-dom-element-selection--oop-rendering)
+    - [9.2. Interacting with DOM elements](#92-interacting-with-dom-elements)
+    - [9.3. Creating \& Using an `AutoBind` decorator](#93-creating--using-an-autobind-decorator)
+    - [9.4. Fetching User Input](#94-fetching-user-input)
+    - [9.5. Creating a re-usable validation functionality](#95-creating-a-re-usable-validation-functionality)
+    - [9.6. Rendering Project Lists](#96-rendering-project-lists)
+    - [9.7. Managing Application State with Singletons](#97-managing-application-state-with-singletons)
+    - [9.8. More classes \& Custom types](#98-more-classes--custom-types)
+    - [9.9. Filtering Projects with Enums](#99-filtering-projects-with-enums)
+    - [9.10. Adding Inheritance \& Generics](#910-adding-inheritance--generics)
+    - [9.11. Rendering Project Items with a Class](#911-rendering-project-items-with-a-class)
+    - [9.12. Using `getter`](#912-using-getter)
+    - [9.13. Utilizing interfaces to implement Drag \& Drop](#913-utilizing-interfaces-to-implement-drag--drop)
+  - [10. Section 10: Modules \& Namespaces](#10-section-10-modules--namespaces)
+    - [10.1. Writing module code](#101-writing-module-code)
+    - [10.2. Working with `namespace`](#102-working-with-namespace)
+    - [10.3. Complete `namespace` structure](#103-complete-namespace-structure)
+    - [10.4. Using `ES modules`](#104-using-es-modules)
+    - [10.5. Understanding various `import & export` syntaxes](#105-understanding-various-import--export-syntaxes)
+    - [10.6. How does code in modules execute](#106-how-does-code-in-modules-execute)
+  - [11. Section 11: Using `webpack` with `ts`](#11-section-11-using-webpack-with-ts)
 
 ## 1. Section 1. Getting started
 
@@ -1425,7 +1427,7 @@ Setup `decorators` with `ts`
 }
 ```
 
-### A first class decorator
+### 8.1. A first class decorator
 
 Normal class
 
@@ -1474,7 +1476,7 @@ const person = new Person();
 console.log(person);
 ```
 
-### Working with `decorator factories`
+### 8.2. Working with `decorator factories`
 
 `Decorator factories` return a `decorator` function but allows us to configure
 it when we assign it as a `decorator` to something.
@@ -1506,7 +1508,7 @@ const person = new Person();
 console.log(person);
 ```
 
-### Building more useful decorators
+### 8.3. Building more useful decorators
 
 Look at `@Component` from `angular`
 
@@ -1530,7 +1532,7 @@ class Student {
 }
 ```
 
-### Adding multiple decorators
+### 8.4. Adding multiple decorators
 
 You can add more than one decorator to a class or anywhere else use
 can use the decorator.
@@ -1551,7 +1553,7 @@ The factory order is from top to bottom
 class Student {}
 ```
 
-### Diving into `property decorators`
+### 8.5. Diving into `property decorators`
 
 We can add `decorator` to
 
@@ -1623,9 +1625,9 @@ work with a property you can run some code. You can use `decorators` to
 setup some works behind the scene when class is defined, to add extra metadata
 or store some data about a property somewhere else in your project.
 
-## Section 9: Drag & Drop Project
+## 9. Section 9: Drag & Drop Project
 
-### DOM element selection & OOP rendering
+### 9.1. DOM element selection & OOP rendering
 
 Render form element to the UI
 
@@ -1670,7 +1672,7 @@ class ProjectInput {
 new ProjectInput();
 ```
 
-### Interacting with DOM elements
+### 9.2. Interacting with DOM elements
 
 ```ts
 class ProjectInput {
@@ -1728,7 +1730,7 @@ class ProjectInput {
 new ProjectInput();
 ```
 
-### Creating & Using an `AutoBind` decorator
+### 9.3. Creating & Using an `AutoBind` decorator
 
 Manually `bind this`
 
@@ -1793,7 +1795,7 @@ class ProjectInput {
 }
 ```
 
-### Fetching User Input
+### 9.4. Fetching User Input
 
 Create method to gather user inputs. The below method return `void`
 if there is some validation errors or return a `tuple` contains
@@ -1848,7 +1850,7 @@ Call all of the above logics inside form handler function
   }
 ```
 
-### Creating a re-usable validation functionality
+### 9.5. Creating a re-usable validation functionality
 
 Validatable interface
 
@@ -1936,7 +1938,7 @@ Implement validation logic
   }
 ```
 
-### Rendering Project Lists
+### 9.6. Rendering Project Lists
 
 Adding `ProjectList` class to handle `Active List` and `Finished List`
 
@@ -1991,7 +1993,7 @@ Result
 
 ![Image](assets/dragdrop1.png)
 
-### Managing Application State with Singletons
+### 9.7. Managing Application State with Singletons
 
 Build a class that hold app `state` and attach some `eventListener` to it (`reactive`).
 
@@ -2141,7 +2143,7 @@ class ProjectList {
 
 Now, everytime the `ProjectState.getInstance().addProject(title, description, people)` is called, we get new project list re-render itself.
 
-### More classes & Custom types
+### 9.8. More classes & Custom types
 
 Define type for `Project`
 
@@ -2221,7 +2223,7 @@ class ProjectState {
 }
 ```
 
-### Filtering Projects with Enums
+### 9.9. Filtering Projects with Enums
 
 We can filter projects throught project type (`active` | `finished`)
 
@@ -2607,7 +2609,7 @@ const activeProjectList = new ProjectList("active");
 const finishedProjectList = new ProjectList("finished");
 ```
 
-### Adding Inheritance & Generics
+### 9.10. Adding Inheritance & Generics
 
 Add base class to hold some common information in `ProjectList` and `ProjectInput` class called `Component`.
 
@@ -2912,7 +2914,7 @@ class ProjectState extends State<Project> {
 }
 ```
 
-### Rendering Project Items with a Class
+### 9.11. Rendering Project Items with a Class
 
 Define new `component` called `ProjectItem` which reponsible for rendering
 1 single project item.
@@ -2980,7 +2982,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 }
 ```
 
-### Using `getter`
+### 9.12. Using `getter`
 
 ```ts
 class Project {
@@ -3002,7 +3004,7 @@ class Project {
 }
 ```
 
-### Utilizing interfaces to implement Drag & Drop
+### 9.13. Utilizing interfaces to implement Drag & Drop
 
 Setup `template` for supporting `draggable`
 
@@ -3751,11 +3753,11 @@ const activeProjectList = new ProjectList("active");
 const finishedProjectList = new ProjectList("finished");
 ```
 
-## Section 10: Modules & Namespaces
+## 10. Section 10: Modules & Namespaces
 
 Writing modular code
 
-### Writing module code
+### 10.1. Writing module code
 
 Splitting code into multiple files
 
@@ -3764,7 +3766,7 @@ Splitting code into multiple files
 
 ![Image](assets/modular1.png)
 
-### Working with `namespace`
+### 10.2. Working with `namespace`
 
 Define common namespace called `App`
 
@@ -3913,11 +3915,11 @@ Config `tsconfig.json` to bundle file
 }
 ```
 
-### Complete `namespace` structure
+### 10.3. Complete `namespace` structure
 
 ![Image](assets/namespace1.png)
 
-### Using `ES modules`
+### 10.4. Using `ES modules`
 
 Modern browsers support `es module` natively, where the browser
 will then basically download all the dependencies of a file when
@@ -3977,7 +3979,7 @@ Result
 
 ![Image](assets/es6module1.png)
 
-### Understanding various `import & export` syntaxes
+### 10.5. Understanding various `import & export` syntaxes
 
 - Group `import`
 
@@ -4006,3 +4008,10 @@ import BaseComponent from "./base.js";
 
 Prefer `named export` because it have `autocomplete` when
 writing code & enforce naming convention.
+
+### 10.6. How does code in modules execute
+
+It run 1 time when the file is imported for the first time by
+any other file.
+
+## 11. Section 11: Using `webpack` with `ts`
