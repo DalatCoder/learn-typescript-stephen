@@ -3959,3 +3959,7 @@ Tell `<script>` to load module
   <script type="module" src="dist/app.js"></script>
 </head>
 ```
+
+Result
+
+![Image](assets/es6module1.png)
