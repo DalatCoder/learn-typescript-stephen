@@ -3960,6 +3960,18 @@ Tell `<script>` to load module
 </head>
 ```
 
+Using `native module` from the browser, we need to add `*.js` when import a module. `*js`
+can be emitted when we use `webpack` to bundle files
+
+```ts
+import { ProjectInput } from "./components/project-input.js";
+import { ProjectList } from "./components/project-list.js";
+
+new ProjectInput();
+new ProjectList("active");
+new ProjectList("finished");
+```
+
 Result
 
 ![Image](assets/es6module1.png)
