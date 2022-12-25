@@ -86,6 +86,11 @@
     - [Building more useful decorators](#building-more-useful-decorators)
     - [Adding multiple decorators](#adding-multiple-decorators)
     - [Diving into `property decorators`](#diving-into-property-decorators)
+  - [Section 9: Drag \& Drop Project](#section-9-drag--drop-project)
+    - [DOM element selection \& OOP rendering](#dom-element-selection--oop-rendering)
+    - [Interacting with DOM elements](#interacting-with-dom-elements)
+    - [Creating \& Using an `AutoBind` decorator](#creating--using-an-autobind-decorator)
+    - [Fetching User Input](#fetching-user-input)
 
 ## 1. Section 1. Getting started
 
@@ -1602,3 +1607,228 @@ use case. They're not eventListener you add to something so that when you
 work with a property you can run some code. You can use `decorators` to
 setup some works behind the scene when class is defined, to add extra metadata
 or store some data about a property somewhere else in your project.
+
+## Section 9: Drag & Drop Project
+
+### DOM element selection & OOP rendering
+
+Render form element to the UI
+
+```ts
+class ProjectInput {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLFormElement;
+
+  constructor() {
+    // this.templateElement = <HTMLTemplateElement>document.getElementById('project-input')!;
+    this.templateElement = document.getElementById(
+      "project-input"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    /**
+     * Load template
+     */
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    );
+
+    /**
+     * Store template content (first child)
+     */
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = "user-input";
+
+    this.attach();
+  }
+
+  private attach() {
+    /**
+     * Render template child element to the `root`
+     */
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+new ProjectInput();
+```
+
+### Interacting with DOM elements
+
+```ts
+class ProjectInput {
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  peopleInputElement: HTMLInputElement;
+
+  constructor() {
+    /**
+     * Add event listeners to form element
+     */
+    this.titleInputElement = this.element.querySelector(
+      "#title"
+    )! as HTMLInputElement;
+    this.descriptionInputElement = this.element.querySelector(
+      "#description"
+    )! as HTMLInputElement;
+    this.peopleInputElement = this.element.querySelector(
+      "#people"
+    )! as HTMLInputElement;
+
+    this.configure();
+
+    /**
+     * Insert Element to DOM | Render
+     */
+    this.attach();
+  }
+
+  /**
+   * Handle form submission
+   * @param event Event
+   */
+  private submitHandler(event: Event) {
+    event.preventDefault();
+
+    console.log(this.titleInputElement.value);
+  }
+
+  /**
+   * Add event listener to the <form /> element
+   */
+  private configure() {
+    this.element.addEventListener("submit", this.submitHandler.bind(this));
+  }
+
+  private attach() {
+    /**
+     * Render template child element to the `root`
+     */
+    this.hostElement.insertAdjacentElement("afterbegin", this.element);
+  }
+}
+
+new ProjectInput();
+```
+
+### Creating & Using an `AutoBind` decorator
+
+Manually `bind this`
+
+```ts
+/**
+ * Add event listener to the <form /> element
+ */
+private configure() {
+  this.element.addEventListener("submit", this.submitHandler.bind(this));
+}
+```
+
+Create `Autobind` decorator to return the `bound version` of the original function.
+Because this `decorator` is used to decorate `method`, so it has 3 args
+
+```ts
+/**
+ * AutoBind decorator
+ */
+function Autobind(
+  _target: any,
+  _methodName: string,
+  descriptor: PropertyDescriptor
+): PropertyDescriptor {
+  const originalFunction = descriptor.value;
+  const autobindDescriptor: PropertyDescriptor = {
+    configurable: true,
+    get() {
+      const boundFunction = originalFunction.bind(this);
+      return boundFunction;
+    },
+  };
+
+  return autobindDescriptor;
+}
+```
+
+Using `Autobind` decorator
+
+```ts
+/**
+ * Project Input Class | Handle Form
+ */
+class ProjectInput {
+  /**
+   * Handle form submission
+   * @param event Event
+   */
+  @Autobind
+  private submitHandler(event: Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value);
+  }
+
+  /**
+   * Add event listener to the <form /> element
+   */
+  private configure() {
+    // no need to manually bind here
+    this.element.addEventListener("submit", this.submitHandler);
+  }
+}
+```
+
+### Fetching User Input
+
+Create method to gather user inputs. The below method return `void`
+if there is some validation errors or return a `tuple` contains
+`title`, `description` and number of `people` in case of success validation.
+
+```ts
+  private gatherUserInput(): [string, string, number] | void {
+      const enteredTitle = this.titleInputElement.value
+      const enteredDescription = this.descriptionInputElement.value
+      const enteredPeople = this.peopleInputElement.value
+
+      if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredPeople.trim().length === 0) {
+          alert('Invalid input, please try again!')
+          return;
+      } else {
+          return [enteredTitle, enteredDescription, +enteredPeople]
+      }
+  }
+```
+
+Also we create a method to clear user input after the form has been submitted
+
+```ts
+  private clearInputs() {
+      this.titleInputElement.value = ''
+      this.descriptionInputElement.value = ''
+      this.peopleInputElement.value = ''
+  }
+```
+
+Call all of the above logics inside form handler function
+
+```ts
+  /**
+   * Handle form submission
+   * @param event Event
+   */
+  @Autobind
+  private submitHandler(event: Event) {
+      event.preventDefault();
+      const userInput = this.gatherUserInput();
+
+      /**
+       * Only if userInput is a tuple
+       */
+      if (Array.isArray(userInput)) {
+          const [title, description, people] = userInput;
+          console.log(title, description, people)
+
+          this.clearInputs();
+      }
+  }
+```

@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server"
+    "start": "concurrently --kill-others \"npm run compile\" \"npm run lite-server\"",
+    "lite-server": "lite-server",
+    "compile": "tsc --watch"
   },
   "keywords": [
     "typescript",
@@ -14,6 +16,8 @@
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",
   "devDependencies": {
-    "lite-server": "^2.5.4"
+    "concurrently": "^7.6.0",
+    "lite-server": "^2.5.4",
+    "typescript": "^4.9.4"
   }
 }
