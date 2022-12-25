@@ -111,6 +111,7 @@
     - [What is `webpack` \& why do we need it?](#what-is-webpack--why-do-we-need-it)
     - [Installing `webpack` \& important dependencies](#installing-webpack--important-dependencies)
     - [Configuration](#configuration)
+    - [Adding a production workflow](#adding-a-production-workflow)
 
 ## 1. Section 1. Getting started
 
@@ -4131,3 +4132,79 @@ module.exports = {
 ```
 
 Adding `webpack-dev-server`
+
+### Adding a production workflow
+
+Config `webpack.config.prod.js` file for production
+
+```js
+/**
+ * NodeJS environments
+ */
+
+const path = require("path");
+const CleanPlugin = require("clean-webpack-plugin");
+
+const outPath = path.resolve(__dirname, "dist");
+
+module.exports = {
+  mode: "production",
+  entry: "./src/app.ts",
+  output: {
+    filename: "bundle.js",
+    path: outPath,
+  },
+  devtool: "none",
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
+  plugins: [new CleanPlugin.CleanWebpackPlugin()],
+};
+```
+
+Adding new script
+
+```json
+{
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack --config webpack.config.prod.js"
+  }
+}
+```
+
+Complete script & dependency packages
+
+```json
+{
+  "name": "understanding-typescript",
+  "version": "1.0.0",
+  "description": "Understanding TypeScript Course Setup",
+  "main": "app.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack --config webpack.config.prod.js"
+  },
+  "keywords": ["typescript", "course"],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.5.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "clean-webpack-plugin": "^3.0.0"
+  }
+}
+```
