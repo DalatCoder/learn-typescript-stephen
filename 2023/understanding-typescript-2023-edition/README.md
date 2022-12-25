@@ -105,6 +105,7 @@
     - [Working with `namespace`](#working-with-namespace)
     - [Complete `namespace` structure](#complete-namespace-structure)
     - [Using `ES modules`](#using-es-modules)
+    - [Understanding various `import & export` syntaxes](#understanding-various-import--export-syntaxes)
 
 ## 1. Section 1. Getting started
 
@@ -3975,3 +3976,33 @@ new ProjectList("finished");
 Result
 
 ![Image](assets/es6module1.png)
+
+### Understanding various `import & export` syntaxes
+
+- Group `import`
+
+```ts
+import { Validatable, validate } from "../utils/validation.js";
+import * as Validation from "../utils/validation.js";
+```
+
+- Aliasing
+
+```ts
+import { Autobind as AutobindDecorator } from "../decorators/autobind.js";
+```
+
+- Export default
+
+```ts
+// base.ts
+export default class Component {}
+```
+
+```ts
+// project-list.ts
+import BaseComponent from "./base.js";
+```
+
+Prefer `named export` because it have `autocomplete` when
+writing code & enforce naming convention.
