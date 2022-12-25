@@ -1,4 +1,18 @@
 /**
+ * Drag & Drop Interfaces
+ */
+interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragEndHandler(event: DragEvent): void;
+}
+
+interface DragTarget {
+  dragOverHandler(event: DragEvent): void;
+  dropHandler(event: DragEvent): void;
+  dragLeaveHandler(event: DragEvent): void;
+}
+
+/**
  * Define Project Type
  */
 enum ProjectStatus {
@@ -200,7 +214,10 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract render(): void;
 }
 
-class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+class ProjectItem
+  extends Component<HTMLUListElement, HTMLLIElement>
+  implements Draggable
+{
   private project: Project;
 
   constructor(hostId: string, project: Project) {
@@ -210,8 +227,10 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
     this.configure();
     this.render();
   }
-
-  configure(): void {}
+  configure(): void {
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler);
+  }
 
   render(): void {
     this.element.querySelector("h2")!.textContent = this.project.title;
@@ -219,12 +238,26 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
       this.project.persons + " assigned";
     this.element.querySelector("p")!.textContent = this.project.description;
   }
+
+  @Autobind
+  dragStartHandler(event: DragEvent): void {
+    event.dataTransfer!.setData("text/plain", this.project.id);
+    event.dataTransfer!.effectAllowed = "move";
+  }
+
+  @Autobind
+  dragEndHandler(_event: DragEvent): void {
+    console.log("drag end");
+  }
 }
 
 /**
  * Project List Class | Render List
  */
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList
+  extends Component<HTMLDivElement, HTMLElement>
+  implements DragTarget
+{
   projects: Project[];
 
   constructor(public type: "active" | "finished") {
@@ -253,6 +286,13 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
       });
       this.renderProjects();
     });
+
+    /**
+     * Handle drop events
+     */
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
   }
 
   render() {
@@ -272,6 +312,31 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     for (const project of this.projects) {
       new ProjectItem(listElementId, project);
     }
+  }
+
+  @Autobind
+  dragOverHandler(event: DragEvent): void {
+    if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
+      /**
+       * Allow drop
+       */
+      event.preventDefault();
+
+      const listEl = this.element.querySelector("ul")! as HTMLUListElement;
+      listEl.classList.add("droppable");
+    }
+  }
+
+  @Autobind
+  dragLeaveHandler(_event: DragEvent): void {
+    const listEl = this.element.querySelector("ul")! as HTMLUListElement;
+    listEl.classList.remove("droppable");
+  }
+
+  @Autobind
+  dropHandler(event: DragEvent): void {
+    const projectId = event.dataTransfer!.getData("text/plain");
+    console.log(projectId);
   }
 }
 
