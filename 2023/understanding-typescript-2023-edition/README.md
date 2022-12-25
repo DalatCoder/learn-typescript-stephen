@@ -115,6 +115,8 @@
   - [Section 12: 3rd party libraries \& typescript](#section-12-3rd-party-libraries--typescript)
     - [Using JS libraries with `ts`](#using-js-libraries-with-ts)
     - [using `declare` as a `Last Resort`](#using-declare-as-a-last-resort)
+    - [no types needed: `class-transformer`](#no-types-needed-class-transformer)
+    - [TypeScript-embracing: `class-validator`](#typescript-embracing-class-validator)
 
 ## 1. Section 1. Getting started
 
@@ -4245,4 +4247,90 @@ Using `declare` for telling `ts` that: don't worry, this variable will exist.
 ```ts
 declare var GLOBAL: string;
 console.log(GLOBAL);
+```
+
+### no types needed: `class-transformer`
+
+[Github](https://github.com/typestack/class-transformer)
+
+```ts
+// product.model.ts
+
+class Product {
+  title: string;
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+
+  getInformation() {
+    return [this.title, `$${this.price}`];
+  }
+}
+```
+
+Now, we fetch from server a list of `product` in `json` format
+
+```ts
+const products = [
+  {
+    title: "",
+    price: 0,
+  },
+  {
+    title: "",
+    price: 0,
+  },
+];
+```
+
+We would manually transform raw data to instance of `Product` class
+
+```ts
+const loadedProducts = products.map((prod) => new Product());
+```
+
+That's where the `class-transformer` can help us. It makes
+things very simple.
+
+```ts
+const loadedProducts = plainToClass(Product, productsJson);
+```
+
+### TypeScript-embracing: `class-validator`
+
+[Github](https://github.com/typestack/class-validator)
+
+```ts
+// product.model.ts
+
+class Product {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNumber()
+  @IsPositive()
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+
+  getInformation() {
+    return [this.title, `$${this.price}`];
+  }
+}
+
+const newProduct = new Product("", -1);
+validate(newProd).then((errors) => {
+  if (errors.length > 0) {
+    console.log("VALIDATION ERRORS!");
+    console.log(errors);
+  } else {
+    // ...
+  }
+});
 ```
