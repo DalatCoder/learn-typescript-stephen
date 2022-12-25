@@ -92,6 +92,7 @@
     - [Creating \& Using an `AutoBind` decorator](#creating--using-an-autobind-decorator)
     - [Fetching User Input](#fetching-user-input)
     - [Creating a re-usable validation functionality](#creating-a-re-usable-validation-functionality)
+    - [Rendering Project Lists](#rendering-project-lists)
 
 ## 1. Section 1. Getting started
 
@@ -1921,3 +1922,58 @@ Implement validation logic
       }
   }
 ```
+
+### Rendering Project Lists
+
+Adding `ProjectList` class to handle `Active List` and `Finished List`
+
+```ts
+/**
+ * Project List Class | Render List
+ */
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+
+  constructor(public type: "active" | "finished") {
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    );
+
+    this.element = importedNode.firstElementChild as HTMLFormElement;
+    this.element.id = `${this.type}-projects`;
+
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+```
+
+Create 2 instance of `list`
+
+```ts
+const activeProjectList = new ProjectList("active");
+const finishedProjectList = new ProjectList("finished");
+```
+
+Result
+
+![Image](assets/dragdrop1.png)
