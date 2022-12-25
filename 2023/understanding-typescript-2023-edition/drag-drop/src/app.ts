@@ -156,7 +156,13 @@ class ProjectList {
      * Subcribes to state changes
      */
     ProjectState.getInstance().addListener((projects: Project[]) => {
-      this.projects = projects;
+      this.projects = projects.filter(project => {
+        if (type === 'active') {
+            return project.status === ProjectStatus.Active
+        }
+
+        return project.status === ProjectStatus.Finished;
+      });
       this.renderProjects();
     });
 
