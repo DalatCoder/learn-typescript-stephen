@@ -110,6 +110,7 @@
   - [11. Section 11: Using `webpack` with `ts`](#11-section-11-using-webpack-with-ts)
     - [What is `webpack` \& why do we need it?](#what-is-webpack--why-do-we-need-it)
     - [Installing `webpack` \& important dependencies](#installing-webpack--important-dependencies)
+    - [Configuration](#configuration)
 
 ## 1. Section 1. Getting started
 
@@ -4050,3 +4051,83 @@ npm i --save-dev webpack webpack-cli webpack-dev-server typescript ts-loader
 
 - `ts-loader`: work together with `webpack`,
   is a package that tell webpack how to convert `ts` code to `js`
+
+### Configuration
+
+`tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ES2015",
+    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
+}
+```
+
+Basic `webpack` setup in `webpack.config.js`
+
+```js
+/**
+ * NodeJS environments
+ */
+
+const path = require("path");
+
+const absoluteOutPath = path.resolve(__dirname, "dist");
+
+module.exports = {
+  entry: "./src/app.ts",
+  output: {
+    filename: "bundle.js",
+    path: absoluteOutPath,
+  },
+};
+```
+
+Adding `ts` support with `ts-loader`
+
+```js
+/**
+ * NodeJS environments
+ */
+
+const path = require("path");
+
+const outPath = path.resolve(__dirname, "dist");
+
+module.exports = {
+  entry: "./src/app.ts",
+  output: {
+    filename: "bundle.js",
+    path: outPath,
+  },
+  devtool: "inline-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
+};
+```
+
+Adding `webpack-dev-server`
