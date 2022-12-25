@@ -93,6 +93,7 @@
     - [Fetching User Input](#fetching-user-input)
     - [Creating a re-usable validation functionality](#creating-a-re-usable-validation-functionality)
     - [Rendering Project Lists](#rendering-project-lists)
+    - [Managing Application State with Singletons](#managing-application-state-with-singletons)
 
 ## 1. Section 1. Getting started
 
@@ -1977,3 +1978,153 @@ const finishedProjectList = new ProjectList("finished");
 Result
 
 ![Image](assets/dragdrop1.png)
+
+### Managing Application State with Singletons
+
+Build a class that hold app `state` and attach some `eventListener` to it (`reactive`).
+
+Build a `global state management object` and `listen` to changes, then `update`
+the `UI`
+
+Build a `global state management` using `singleton` pattern
+
+```ts
+/**
+ * Project State Management
+ */
+class ProjectState {
+  private projects: any[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = {
+      id: Math.random().toString(),
+      title: title,
+      description: description,
+      people: numOfPeople,
+    };
+
+    this.projects.push(newProject);
+  }
+}
+```
+
+Example of using it
+
+```ts
+ProjectState.addProject("", "", 0);
+```
+
+Add support for `reactive` through `observer` pattern
+
+```ts
+/**
+ * Project State Management
+ */
+class ProjectState {
+  private listeners: any[] = [];
+  private projects: any[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {}
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addListener(listernFn: Function) {
+    this.listeners.push(listernFn);
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = {
+      id: Math.random().toString(),
+      title: title,
+      description: description,
+      people: numOfPeople,
+    };
+
+    this.projects.push(newProject);
+
+    /**
+     * Notify all listeners
+     */
+    for (const listernFn of this.listeners) {
+      listernFn(this.projects.slice());
+    }
+  }
+}
+```
+
+Add `eventListener` in `ProjectList` to re-render the project list everytime
+the `state` changes.
+
+```ts
+/**
+ * Project List Class | Render List
+ */
+class ProjectList {
+  projects: any[];
+
+  constructor(public type: "active" | "finished") {
+    this.projects = [];
+
+    /**
+     * Subcribes to state changes
+     */
+    ProjectState.getInstance().addListener((projects: any[]) => {
+      this.projects = projects;
+      this.renderProjects();
+    });
+
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    listEl.innerHTML = "";
+
+    for (const project of this.projects) {
+      const listItem = document.createElement("li");
+      listItem.textContent = project.title;
+      listEl.appendChild(listItem);
+    }
+  }
+
+  private renderContent() {
+    /**
+     * Attach list id for `renderProjects` method
+     */
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+```
+
+Now, everytime the `ProjectState.getInstance().addProject(title, description, people)` is called, we get new project list re-render itself.
