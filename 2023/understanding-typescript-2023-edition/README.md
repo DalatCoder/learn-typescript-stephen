@@ -103,6 +103,7 @@
   - [Section 10: Modules \& Namespaces](#section-10-modules--namespaces)
     - [Writing module code](#writing-module-code)
     - [Working with `namespace`](#working-with-namespace)
+    - [Complete `namespace` structure](#complete-namespace-structure)
 
 ## 1. Section 1. Getting started
 
@@ -3958,3 +3959,7 @@ Config `tsconfig.json` to bundle file
   ]
 }
 ```
+
+### Complete `namespace` structure
+
+![Image](assets/namespace1.png)
