@@ -91,6 +91,7 @@
     - [Interacting with DOM elements](#interacting-with-dom-elements)
     - [Creating \& Using an `AutoBind` decorator](#creating--using-an-autobind-decorator)
     - [Fetching User Input](#fetching-user-input)
+    - [Creating a re-usable validation functionality](#creating-a-re-usable-validation-functionality)
 
 ## 1. Section 1. Getting started
 
@@ -1829,6 +1830,94 @@ Call all of the above logics inside form handler function
           console.log(title, description, people)
 
           this.clearInputs();
+      }
+  }
+```
+
+### Creating a re-usable validation functionality
+
+Validatable interface
+
+```ts
+interface Validatable {
+  value: string | number;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+```
+
+Create validation function
+
+```ts
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+
+  if (validatableInput.required) {
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+  }
+
+  if (typeof validatableInput.value === "string") {
+    /**
+     * Only false if minLengh = null | undefined (0 is OK)
+     */
+    if (validatableInput.minLength != null) {
+      isValid =
+        isValid && validatableInput.value.length >= validatableInput.minLength;
+    }
+
+    if (validatableInput.maxLength != null) {
+      isValid =
+        isValid && validatableInput.value.length <= validatableInput.maxLength;
+    }
+  }
+
+  if (typeof validatableInput.value === "number") {
+    if (validatableInput.min != null) {
+      isValid = isValid && validatableInput.value >= validatableInput.min;
+    }
+
+    if (validatableInput.max != null) {
+      isValid = isValid && validatableInput.value <= validatableInput.max;
+    }
+  }
+
+  return isValid;
+}
+```
+
+Implement validation logic
+
+```ts
+  private gatherUserInput(): [string, string, number] | void {
+      const enteredTitle = this.titleInputElement.value
+      const enteredDescription = this.descriptionInputElement.value
+      const enteredPeople = this.peopleInputElement.value
+
+      const titleValidatable: Validatable = {
+          value: enteredTitle,
+          required: true
+      }
+
+      const descriptionValidatable: Validatable = {
+          value: enteredDescription,
+          required: true,
+          minLength: 5
+      }
+
+      const peopleValidatable: Validatable = {
+          value: +enteredPeople,
+          required: true,
+          min: 1
+      }
+
+      if (!validate(titleValidatable) || !validate(descriptionValidatable) || !validate(peopleValidatable)) {
+          alert('Invalid input, please try again!')
+          return;
+      } else {
+          return [enteredTitle, enteredDescription, +enteredPeople]
       }
   }
 ```
