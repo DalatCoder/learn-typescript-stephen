@@ -98,6 +98,7 @@
     - [Filtering Projects with Enums](#filtering-projects-with-enums)
     - [Adding Inheritance \& Generics](#adding-inheritance--generics)
     - [Rendering Project Items with a Class](#rendering-project-items-with-a-class)
+    - [Using `getter`](#using-getter)
 
 ## 1. Section 1. Getting started
 
@@ -2969,5 +2970,27 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
       new ProjectItem(listElementId, project);
     }
   }
+}
+```
+
+### Using `getter`
+
+```ts
+class Project {
+  get persons() {
+    if (this.people === 1) {
+      return "1 person";
+    } else {
+      return `${this.people} persons`;
+    }
+  }
+
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
 }
 ```

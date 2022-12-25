@@ -7,6 +7,14 @@ enum ProjectStatus {
 }
 
 class Project {
+  get persons() {
+    if (this.people === 1) {
+      return "1 person";
+    } else {
+      return `${this.people} persons`;
+    }
+  }
+
   constructor(
     public id: string,
     public title: string,
@@ -208,7 +216,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
   render(): void {
     this.element.querySelector("h2")!.textContent = this.project.title;
     this.element.querySelector("h3")!.textContent =
-      this.project.people.toString();
+      this.project.persons + " assigned";
     this.element.querySelector("p")!.textContent = this.project.description;
   }
 }
