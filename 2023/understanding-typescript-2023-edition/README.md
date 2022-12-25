@@ -102,6 +102,7 @@
     - [Utilizing interfaces to implement Drag \& Drop](#utilizing-interfaces-to-implement-drag--drop)
   - [Section 10: Modules \& Namespaces](#section-10-modules--namespaces)
     - [Writing module code](#writing-module-code)
+    - [Working with `namespace`](#working-with-namespace)
 
 ## 1. Section 1. Getting started
 
@@ -3759,3 +3760,201 @@ Splitting code into multiple files
 - `ES6 modules`
 
 ![Image](assets/modular1.png)
+
+### Working with `namespace`
+
+Define common namespace called `App`
+
+Extract all `interface` to `interfaces.ts`
+
+```ts
+namespace App {
+  /**
+   * Drag & Drop Interfaces
+   */
+  export interface Draggable {
+    dragStartHandler(event: DragEvent): void;
+    dragEndHandler(event: DragEvent): void;
+  }
+
+  export interface DragTarget {
+    dragOverHandler(event: DragEvent): void;
+    dropHandler(event: DragEvent): void;
+    dragLeaveHandler(event: DragEvent): void;
+  }
+}
+```
+
+Extract project `model` to `models.ts`
+
+```ts
+namespace App {
+  /**
+   * Define Project Type
+   */
+  export enum ProjectStatus {
+    Active,
+    Finished,
+  }
+
+  export class Project {
+    get persons() {
+      if (this.people === 1) {
+        return "1 person";
+      } else {
+        return `${this.people} persons`;
+      }
+    }
+
+    constructor(
+      public id: string,
+      public title: string,
+      public description: string,
+      public people: number,
+      public status: ProjectStatus
+    ) {}
+  }
+}
+```
+
+Inside `app.ts`, we add reference to those files
+
+```ts
+/// <reference path="interfaces.ts" />
+/// <reference path="models.ts" />
+
+namespace App {
+  /**
+   * Define Listener Type
+   */
+  type Listener<T> = (items: T[]) => void;
+
+  /**
+   * Project State Management
+   */
+  class State<T> {
+    protected listeners: Listener<T>[] = [];
+
+    addListener(listernFn: Listener<T>) {
+      this.listeners.push(listernFn);
+    }
+  }
+
+  class ProjectState extends State<Project> {}
+
+  /**
+   * Input Validation
+   */
+  interface Validatable {}
+
+  function validate(validatableInput: Validatable) {}
+
+  /**
+   * AutoBind decorator
+   */
+  function Autobind(
+    _target: any,
+    _methodName: string,
+    descriptor: PropertyDescriptor
+  ) {}
+
+  /**
+   * Base Component
+   */
+  abstract class Component<T extends HTMLElement, U extends HTMLElement> {}
+
+  class ProjectItem
+    extends Component<HTMLUListElement, HTMLLIElement>
+    implements Draggable {}
+
+  /**
+   * Project List Class | Render List
+   */
+  class ProjectList
+    extends Component<HTMLDivElement, HTMLElement>
+    implements DragTarget {}
+
+  /**
+   * Project Input Class | Handle Form
+   */
+  class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {}
+
+  new ProjectInput();
+  new ProjectList("active");
+  new ProjectList("finished");
+}
+```
+
+Config `tsconfig.json` to bundle file
+
+```json
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
+    "module": "amd" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "lib": [
+      "dom",
+      "es6",
+      "dom.iterable",
+      "scripthost"
+    ] /* Specify library files to be included in the compilation. */,
+    // "allowJs": true,                       /* Allow javascript files to be compiled. */
+    // "checkJs": true,                       /* Report errors in .js files. */
+    // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
+    // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
+    "sourceMap": true /* Generates corresponding '.map' file. */,
+    "outFile": "./dist/bundle.js" /* Concatenate and emit output to single file. */,
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+    // "composite": true,                     /* Enable project compilation */
+    "removeComments": true /* Do not emit comments to output. */,
+    // "noEmit": true,                        /* Do not emit outputs. */
+    // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
+    // "downlevelIteration": true,            /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
+    // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+    "noEmitOnError": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    // "noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+    // "strictNullChecks": true,              /* Enable strict null checks. */
+    // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
+    // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+    // "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
+    // "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
+    // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
+
+    /* Additional Checks */
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
+
+    /* Module Resolution Options */
+    // "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
+    // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+    // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
+    // "typeRoots": [],                       /* List of folders to include type definitions from. */
+    // "types": [],                           /* Type declaration files to be included in compilation. */
+    // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
+
+    /* Source Map Options */
+    // "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
+    // "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
+    // "inlineSourceMap": true,               /* Emit a single file with source maps instead of having a separate file. */
+    // "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+
+    /* Experimental Options */
+    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */
+    // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
+  },
+  "exclude": [
+    "node_modules" // would be the default
+  ]
+}
+```
