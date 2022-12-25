@@ -100,6 +100,8 @@
     - [Rendering Project Items with a Class](#rendering-project-items-with-a-class)
     - [Using `getter`](#using-getter)
     - [Utilizing interfaces to implement Drag \& Drop](#utilizing-interfaces-to-implement-drag--drop)
+  - [Section 10: Modules \& Namespaces](#section-10-modules--namespaces)
+    - [Writing module code](#writing-module-code)
 
 ## 1. Section 1. Getting started
 
@@ -3744,3 +3746,16 @@ const projectInput = new ProjectInput();
 const activeProjectList = new ProjectList("active");
 const finishedProjectList = new ProjectList("finished");
 ```
+
+## Section 10: Modules & Namespaces
+
+Writing modular code
+
+### Writing module code
+
+Splitting code into multiple files
+
+- `Namespace & File Bundling`
+- `ES6 modules`
+
+![Image](assets/modular1.png)
