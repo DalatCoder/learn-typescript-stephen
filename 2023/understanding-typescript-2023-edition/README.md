@@ -97,6 +97,7 @@
     - [More classes \& Custom types](#more-classes--custom-types)
     - [Filtering Projects with Enums](#filtering-projects-with-enums)
     - [Adding Inheritance \& Generics](#adding-inheritance--generics)
+    - [Rendering Project Items with a Class](#rendering-project-items-with-a-class)
 
 ## 1. Section 1. Getting started
 
@@ -2883,13 +2884,13 @@ class ProjectState extends State<Project> {
   }
 
   addProject(title: string, description: string, numOfPeople: number) {
-    const newProject = new Project( 
+    const newProject = new Project(
       Math.random().toString(),
       title,
       description,
       numOfPeople,
       ProjectStatus.Active
-     );
+    );
 
     this.projects.push(newProject);
 
@@ -2898,6 +2899,74 @@ class ProjectState extends State<Project> {
      */
     for (const listernFn of this.listeners) {
       listernFn(this.projects.slice());
+    }
+  }
+}
+```
+
+### Rendering Project Items with a Class
+
+Define new `component` called `ProjectItem` which reponsible for rendering
+1 single project item.
+
+```ts
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+  private project: Project;
+
+  constructor(hostId: string, project: Project) {
+    super("single-project", hostId, false, project.id);
+    this.project = project;
+
+    this.configure();
+    this.render();
+  }
+
+  configure(): void {}
+
+  render(): void {
+    this.element.querySelector("h2")!.textContent = this.project.title;
+    this.element.querySelector("h3")!.textContent =
+      this.project.people.toString();
+    this.element.querySelector("p")!.textContent = this.project.description;
+  }
+}
+```
+
+Then, we use this component to render the project item list
+
+```ts
+/**
+ * Project List Class | Render List
+ */
+class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+  projects: Project[];
+
+  constructor(public type: "active" | "finished") {
+    super("project-list", "app", false, `${type}-projects`);
+    this.projects = [];
+
+    this.configure();
+    this.render();
+  }
+
+  configure(): void {}
+
+  render() {
+    const listId = `${this.type}-projects-list`;
+
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private renderProjects() {
+    const listElementId = `${this.type}-projects-list`;
+
+    const listEl = document.getElementById(listElementId)! as HTMLUListElement;
+    listEl.innerHTML = "";
+
+    for (const project of this.projects) {
+      new ProjectItem(listElementId, project);
     }
   }
 }
