@@ -108,6 +108,8 @@
     - [10.5. Understanding various `import & export` syntaxes](#105-understanding-various-import--export-syntaxes)
     - [10.6. How does code in modules execute](#106-how-does-code-in-modules-execute)
   - [11. Section 11: Using `webpack` with `ts`](#11-section-11-using-webpack-with-ts)
+    - [What is `webpack` \& why do we need it?](#what-is-webpack--why-do-we-need-it)
+    - [Installing `webpack` \& important dependencies](#installing-webpack--important-dependencies)
 
 ## 1. Section 1. Getting started
 
@@ -4015,3 +4017,36 @@ It run 1 time when the file is imported for the first time by
 any other file.
 
 ## 11. Section 11: Using `webpack` with `ts`
+
+A modern build workflow
+
+### What is `webpack` & why do we need it?
+
+What is `webpack`
+
+Webpack is a bundling & build orchestration tool. It helps
+us reduce the number of HTTP requests by bundling code together
+
+![Image](assets/webpack.png)
+
+### Installing `webpack` & important dependencies
+
+```sh
+npm i --save-dev webpack webpack-cli webpack-dev-server typescript ts-loader
+```
+
+- `webpack`: the heart
+
+  - transform code from `ts` to `js`
+  - bundle code
+
+- `webpack-cli`: run `webpack` commands
+- `webpack-dev-server`: built-in development server
+
+  - starts `webpack` under the hood.
+  - watches files for changes
+  - trigger recompile
+  - auto serve pages
+
+- `ts-loader`: work together with `webpack`,
+  is a package that tell webpack how to convert `ts` code to `js`
